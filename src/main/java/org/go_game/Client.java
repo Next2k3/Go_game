@@ -9,7 +9,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.net.UnknownHostException;
+
 
 public class Client extends Application implements Runnable{
     public static final int PLAYER1 = 1;

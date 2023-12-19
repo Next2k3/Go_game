@@ -145,7 +145,7 @@ public class Main extends Application {
         giveUpButton.setOnMouseExited(e -> giveUpButton.setStyle("-fx-background-color: #595959;"));
 
         resetButton.setOnAction(event -> {
-            for (var node : root.getChildren()) {
+            for (javafx.scene.Node node : root.getChildren()) {
                 if (node instanceof Circle circle) {
                     circle.setFill(Color.BURLYWOOD);
                 }
