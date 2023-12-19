@@ -1,6 +1,5 @@
-package org.go_game;
+package org.go_game.scene;
 
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,38 +21,82 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class Main extends Application {
+public class SceneManager {
     private Stage primaryStage;
-    public static void main(String[] args) {
-        launch(args);
-    }
+    private Scene menuScene;
+    private Scene onlineGameScene;
+    private Scene botGameScene;
 
-    @Override
-    public void start(Stage primaryStage) {
+    public SceneManager(Stage primaryStage){
         this.primaryStage = primaryStage;
-        primaryStage.setTitle("Goo");
-        primaryStage.setMinWidth(300);
-        primaryStage.setMinHeight(250);
-        primaryStage.setScene(createMenuScene());
+        initMenuScene();
+        initOnlineGameScene();
+        initBotGameScene();
+    }
+    public void showMenuScene(){
+        primaryStage.setScene(menuScene);
         primaryStage.show();
     }
+    private void initMenuScene(){
+        VBox menuLayout = new VBox(10);
+        menuLayout.setAlignment(Pos.CENTER);
+        menuLayout.setBackground(Background.fill(Color.web("#262626")));
+        menuLayout.setPadding(new Insets(10));
+        menuLayout.setMinWidth(300);
 
-    // Metoda do tworzenia sceny
-    private Scene createScene(String sceneName) {
-        VBox layout = new VBox(10);
-        layout.setAlignment(Pos.CENTER);
+        Label label = new Label("Goo...");
+        label.setFont(Font.font(75));
+        label.setTextFill(Color.WHITE);
 
-        Button button = new Button("Menu");
-        button.setMinSize(225,25);
+        // Przyciski
+        Button button1 = new Button("Gra Online");
+        Button button2 = new Button("Gra z botem");
+        Button button3 = new Button("Wyłącz gre");
 
-        button.setOnAction(e -> {
-            primaryStage.setScene(createMenuScene());
+        button1.setFont(new Font(15));
+        button2.setFont(new Font(15));
+        button3.setFont(new Font(15));
+
+        button1.setMinSize(200,15);
+        button2.setMinSize(200,15);
+        button3.setMinSize(200,15);
+
+        button1.setBackground(Background.fill(Color.rgb(59,59,59)));
+        button2.setBackground(Background.fill(Color.rgb(59,59,59)));
+        button3.setBackground(Background.fill(Color.rgb(59,59,59)));
+
+        button1.setTextFill(Color.WHITE);
+        button2.setTextFill(Color.WHITE);
+        button3.setTextFill(Color.WHITE);
+
+        button1.setOnMouseEntered(e -> button1.setStyle("-fx-background-color: lightgray;"));
+        button1.setOnMouseExited(e -> button1.setStyle("-fx-background-color: default;"));
+
+        button2.setOnMouseEntered(e -> button2.setStyle("-fx-background-color: lightgray;"));
+        button2.setOnMouseExited(e -> button2.setStyle("-fx-background-color: default;"));
+
+        button3.setOnMouseEntered(e -> button3.setStyle("-fx-background-color: lightgray;"));
+        button3.setOnMouseExited(e -> button3.setStyle("-fx-background-color: default;"));
+
+
+        // Obsługa zdarzeń przycisków
+        button1.setOnAction(e -> {
+            //Scene scene1 = createScene("Gra Online");
+            primaryStage.setScene(onlineGameScene);
         });
-        layout.getChildren().add(button);
 
-        return new Scene(layout, 300, 200);
+        button2.setOnAction(e -> {
+            primaryStage.setScene(botGameScene);
+        });
+
+        button3.setOnAction(e -> {
+            Platform.exit();
+        });
+
+        menuLayout.getChildren().addAll(label,button1, button2, button3);
+        menuScene = new Scene(menuLayout);
     }
-    private  Scene createFirstScene(){
+    private void initOnlineGameScene() {
         BorderPane layout = new BorderPane();
         layout.setBackground(Background.fill(Color.web("#262626")));
         layout.setPadding(new Insets(10));
@@ -181,75 +224,22 @@ public class Main extends Application {
         container.setLayoutX(BOARD_WIDTH + 10);
         container.setLayoutY(50);
 
-
-
-
-        layout.setLeft(root);
+        layout.setCenter(root);
         layout.setRight(container);
-        return new Scene(layout);
+        onlineGameScene = new Scene(layout);
+    }
+    public void initBotGameScene(){
+        VBox layout = new VBox(10);
+        layout.setAlignment(Pos.CENTER);
+
+        Button button = new Button("Menu");
+        button.setMinSize(225,25);
+
+        button.setOnAction(e -> {
+            primaryStage.setScene(menuScene);
+        });
+        layout.getChildren().add(button);
+        botGameScene = new Scene(layout);
     }
 
-
-    // Metoda do tworzenia sceny menu
-    private Scene createMenuScene() {
-        VBox menuLayout = new VBox(10);
-        menuLayout.setAlignment(Pos.CENTER);
-        menuLayout.setBackground(Background.fill(Color.web("#262626")));
-        menuLayout.setPadding(new Insets(10));
-        menuLayout.setMinWidth(300);
-
-        Label label = new Label("Goo...");
-        label.setFont(Font.font(75));
-        label.setTextFill(Color.WHITE);
-
-        // Przyciski
-        Button button1 = new Button("Gra Online");
-        Button button2 = new Button("Gra z botem");
-        Button button3 = new Button("Wyłącz gre");
-
-        button1.setFont(new Font(15));
-        button2.setFont(new Font(15));
-        button3.setFont(new Font(15));
-
-        button1.setMinSize(200,15);
-        button2.setMinSize(200,15);
-        button3.setMinSize(200,15);
-
-        button1.setBackground(Background.fill(Color.rgb(59,59,59)));
-        button2.setBackground(Background.fill(Color.rgb(59,59,59)));
-        button3.setBackground(Background.fill(Color.rgb(59,59,59)));
-
-        button1.setTextFill(Color.WHITE);
-        button2.setTextFill(Color.WHITE);
-        button3.setTextFill(Color.WHITE);
-
-        button1.setOnMouseEntered(e -> button1.setStyle("-fx-background-color: lightgray;"));
-        button1.setOnMouseExited(e -> button1.setStyle("-fx-background-color: default;"));
-
-        button2.setOnMouseEntered(e -> button2.setStyle("-fx-background-color: lightgray;"));
-        button2.setOnMouseExited(e -> button2.setStyle("-fx-background-color: default;"));
-
-        button3.setOnMouseEntered(e -> button3.setStyle("-fx-background-color: lightgray;"));
-        button3.setOnMouseExited(e -> button3.setStyle("-fx-background-color: default;"));
-
-
-        // Obsługa zdarzeń przycisków
-        button1.setOnAction(e -> {
-            //Scene scene1 = createScene("Gra Online");
-            Scene scene1 = createFirstScene();
-            primaryStage.setScene(scene1);
-        });
-
-        button2.setOnAction(e -> {
-            Scene scene2 = createScene("Gra z botem");
-            primaryStage.setScene(scene2);
-        });
-
-        button3.setOnAction(e -> {
-            Platform.exit();
-        });
-
-        menuLayout.getChildren().addAll(label,button1, button2, button3);
-        return new Scene(menuLayout );
-    }
 }
