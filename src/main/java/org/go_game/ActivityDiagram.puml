@@ -1,0 +1,16 @@
+@startuml
+|Client|
+start
+:Connect to Server;
+if (Connection Successful?) then (yes)
+  :Start Game;
+  while (Game in progress) is (true)
+    :Make Move;
+    :Receive Opponent's Move;
+  endwhile
+  :Display Game Result;
+else (no)
+  :Display Connection Error;
+endif
+stop
+@enduml
