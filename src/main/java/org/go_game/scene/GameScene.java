@@ -89,6 +89,14 @@ public class GameScene {
 
                 // Obsługa zdarzeń kliknięcia myszy dla okręgu
                 circle.setOnMouseClicked(event -> {
+
+                    Color currentColor = (Color) circle.getFill();
+
+                    if (currentColor.equals(Color.WHITE) || currentColor.equals(Color.BLACK)) {
+                        // Kolor już ustawiony, nie dodawaj do historii
+                        return;
+                    }
+
                     if (isWhiteTurn[0]) {
                         circle.setFill(Color.WHITE);
                     } else {
