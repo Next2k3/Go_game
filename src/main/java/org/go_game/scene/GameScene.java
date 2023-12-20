@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -20,94 +21,35 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import org.go_game.App;
+import org.go_game.board.Board;
 
-public class SceneManager {
-    private Stage primaryStage;
-    private Scene menuScene;
-    private Scene onlineGameScene;
-    private Scene botGameScene;
-
-    public SceneManager(Stage primaryStage){
-        this.primaryStage = primaryStage;
-        initMenuScene();
-        initOnlineGameScene();
-        initBotGameScene();
+public class GameScene {
+    private Stage stage;
+    private Scene scene;
+    private int BOARD_SIZE=9;
+    private double BOARD_WIDTH=600.0;
+    private double BOARD_HEIGHT=600.0;
+    private Color BACKGROUD_COLOR=Color.web("#262626");
+    private Color BOARD_COLOR= Color.BURLYWOOD;
+    private Board board;
+    final boolean[] isWhiteTurn = {false};
+    public GameScene(Stage stage){
+        this.stage=stage;
+        this.board=new Board(9);
+        initGameScene();
     }
-    public void showMenuScene(){
-        primaryStage.setScene(menuScene);
-        primaryStage.show();
+
+    public GameScene(Stage stage,int size) {
+        this.stage=stage;
+        this.board=new Board(size);
+        initGameScene();
     }
-    private void initMenuScene(){
-        VBox menuLayout = new VBox(10);
-        menuLayout.setAlignment(Pos.CENTER);
-        menuLayout.setBackground(Background.fill(Color.web("#262626")));
-        menuLayout.setPadding(new Insets(10));
-        menuLayout.setMinWidth(300);
-
-        Label label = new Label("Goo...");
-        label.setFont(Font.font(75));
-        label.setTextFill(Color.WHITE);
-
-        // Przyciski
-        Button button1 = new Button("Gra Online");
-        Button button2 = new Button("Gra z botem");
-        Button button3 = new Button("Wyłącz gre");
-
-        button1.setFont(new Font(15));
-        button2.setFont(new Font(15));
-        button3.setFont(new Font(15));
-
-        button1.setMinSize(200,15);
-        button2.setMinSize(200,15);
-        button3.setMinSize(200,15);
-
-        button1.setBackground(Background.fill(Color.rgb(59,59,59)));
-        button2.setBackground(Background.fill(Color.rgb(59,59,59)));
-        button3.setBackground(Background.fill(Color.rgb(59,59,59)));
-
-        button1.setTextFill(Color.WHITE);
-        button2.setTextFill(Color.WHITE);
-        button3.setTextFill(Color.WHITE);
-
-        button1.setOnMouseEntered(e -> button1.setStyle("-fx-background-color: lightgray;"));
-        button1.setOnMouseExited(e -> button1.setStyle("-fx-background-color: default;"));
-
-        button2.setOnMouseEntered(e -> button2.setStyle("-fx-background-color: lightgray;"));
-        button2.setOnMouseExited(e -> button2.setStyle("-fx-background-color: default;"));
-
-        button3.setOnMouseEntered(e -> button3.setStyle("-fx-background-color: lightgray;"));
-        button3.setOnMouseExited(e -> button3.setStyle("-fx-background-color: default;"));
-
-
-        // Obsługa zdarzeń przycisków
-        button1.setOnAction(e -> {
-            //Scene scene1 = createScene("Gra Online");
-            primaryStage.setScene(onlineGameScene);
-        });
-
-        button2.setOnAction(e -> {
-            primaryStage.setScene(botGameScene);
-        });
-
-        button3.setOnAction(e -> {
-            Platform.exit();
-        });
-
-        menuLayout.getChildren().addAll(label,button1, button2, button3);
-        menuScene = new Scene(menuLayout);
-    }
-    private void initOnlineGameScene() {
+    private void initGameScene(){
         BorderPane layout = new BorderPane();
-        layout.setBackground(Background.fill(Color.web("#262626")));
+        layout.setBackground(Background.fill(BACKGROUD_COLOR));
         layout.setPadding(new Insets(10));
-        layout.setMinWidth(300);
 
-        int BOARD_SIZE = 9;
-        double BOARD_WIDTH = 600.0;
-        double BOARD_HEIGHT = 600.0;
-        Color LINE_COLOR = Color.BLACK;
-        Color BOARD_COLOR = Color.web("#262626");
-        final boolean[] isWhiteTurn = {false};
         ObservableList<String> moveHistory = FXCollections.observableArrayList();
 
         Group root = new Group();
@@ -119,15 +61,14 @@ public class SceneManager {
         for (int i = 0; i < BOARD_SIZE; i++) {
             double x = (i + 1.0) * BOARD_WIDTH / (BOARD_SIZE + 1);
             Line line = new Line(x, 0, x, BOARD_HEIGHT);
-            line.setStroke(LINE_COLOR);
+            line.setStroke(BACKGROUD_COLOR);
             line.setStrokeWidth(5);
             root.getChildren().add(line);
         }
-
         for (int i = BOARD_SIZE - 1; i >= 0; i--) {
             double y = (i + 1.0) * BOARD_HEIGHT / (BOARD_SIZE + 1);
             Line line = new Line(0, y, BOARD_WIDTH, y);
-            line.setStroke(LINE_COLOR);
+            line.setStroke(BACKGROUD_COLOR);
             line.setStrokeWidth(5);
             root.getChildren().add(line);
 
@@ -136,7 +77,7 @@ public class SceneManager {
 
                 Circle circle = new Circle(x,y, 15);
                 circle.setFill(BOARD_COLOR);
-                circle.setStroke(LINE_COLOR);
+                circle.setStroke(BACKGROUD_COLOR);
                 circle.setStrokeWidth(3);
                 circle.setFill(Color.BURLYWOOD);
 
@@ -144,7 +85,7 @@ public class SceneManager {
 
                 // Obsługa zdarzeń myszy dla okręgu
                 circle.setOnMouseEntered(event -> circle.setStroke(Color.RED));
-                circle.setOnMouseExited(event -> circle.setStroke(LINE_COLOR));
+                circle.setOnMouseExited(event -> circle.setStroke(BACKGROUD_COLOR));
 
                 // Obsługa zdarzeń kliknięcia myszy dla okręgu
                 circle.setOnMouseClicked(event -> {
@@ -164,7 +105,6 @@ public class SceneManager {
                 });
             }
         }
-
         VBox buttonPanel = new VBox();
 
         Button resetButton = new Button("Reset");
@@ -226,20 +166,9 @@ public class SceneManager {
 
         layout.setCenter(root);
         layout.setRight(container);
-        onlineGameScene = new Scene(layout);
+        scene = new Scene(layout);
     }
-    public void initBotGameScene(){
-        VBox layout = new VBox(10);
-        layout.setAlignment(Pos.CENTER);
-
-        Button button = new Button("Menu");
-        button.setMinSize(225,25);
-
-        button.setOnAction(e -> {
-            primaryStage.setScene(menuScene);
-        });
-        layout.getChildren().add(button);
-        botGameScene = new Scene(layout);
+    public Scene getScene(){
+        return this.scene;
     }
-
 }
