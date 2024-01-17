@@ -10,7 +10,22 @@ public class Client extends Application {
     private static final String SERVER_ADDRESS = "localhost";
     private static final int SERVER_PORT = 12345;
 
-    public static void main(String[] args) throws Exception {
+    public static final int PLAYER1 = 1;
+    public static final int PLAYER2 = 2;
+    public static final int PLAYER1_WON = 1;
+    public static final int PLAYER2_WON = 2;
+    public static final int DRAW = 3;
+
+    private boolean myTurn = false;
+    private boolean waiting = true;
+    private boolean continueToPlay = true;
+
+    private DataInputStream fromServer;
+    private DataOutputStream toServer;
+
+
+
+    public static void main(String[] args) throws Exception {                               // DO ZMIANY
         // Inicjalizacja połączenia sieciowego
         new Thread(() -> {
             try {
@@ -46,6 +61,29 @@ public class Client extends Application {
 
         // Uruchamianie JavaFX w głównym wątku
         launch(args);
+    }
+
+    private void connectToServer() {
+
+    }
+
+    private void waitForPlayerAction() throws InterruptedException {
+        while (waiting) {
+            Thread.sleep(100);
+        }
+        waiting = true;
+    }
+
+    private void sendMove() throws IOException {
+
+    }
+
+    private void receiveInfoFromServer() throws IOException {
+
+    }
+
+    private void receiveMove() throws IOException {
+
     }
 
     @Override
