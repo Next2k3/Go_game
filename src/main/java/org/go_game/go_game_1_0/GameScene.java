@@ -18,6 +18,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import org.go_game.go_game_1_0.Board.Board;
 
 public class GameScene {
     private Stage stage;
