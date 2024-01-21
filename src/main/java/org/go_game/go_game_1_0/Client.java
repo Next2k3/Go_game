@@ -6,7 +6,7 @@ import java.io.*;
 import java.net.*;
 import java.util.Scanner;
 
-public class Client extends Application {
+public class Client extends Application implements Runnable {
     private static final String SERVER_ADDRESS = "localhost";
     private static final int SERVER_PORT = 12345;
 
@@ -22,51 +22,71 @@ public class Client extends Application {
 
     private DataInputStream fromServer;
     private DataOutputStream toServer;
+    Socket socket;
 
 
 
-    public static void main(String[] args) throws Exception {                               // DO ZMIANY
-        // Inicjalizacja połączenia sieciowego
-        new Thread(() -> {
-            try {
-                Socket socket = new Socket(SERVER_ADDRESS, SERVER_PORT);
-                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-
-                Scanner scanner = new Scanner(System.in);
-                System.out.println("Connected to server. Type your messages:");
-
-                // Wątek do odbierania wiadomości od serwera
-                new Thread(() -> {
-                    try {
-                        String line;
-                        while ((line = in.readLine()) != null) {
-                            System.out.println(line);
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }).start();
-
-                // Wątek do wysyłania wiadomości do serwera
-                while (scanner.hasNextLine()) {
-                    out.println(scanner.nextLine());
-                }
-
-                socket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
+    public static void main(String[] args) throws Exception {
+        Client display = new Client();
+        // ewwntualne ustawienie wielkosci planszy itd.
+        display.init();
 
         // Uruchamianie JavaFX w głównym wątku
-        launch(args);
+        // launch(args);
+    }
+
+    public void init() {
+        // inicjalizacja planszy do gry
+        // i całego okienka (tytul, przzyciski itd.)
+
+        connectToServer();
     }
 
     private void connectToServer() {
+        try {
+            socket = new Socket("localhost", 12345);
+            fromServer = new DataInputStream(socket.getInputStream());
+            toServer = new DataOutputStream(socket.getOutputStream());
+        } catch (IOException ex) {
+            System.err.println(ex);
+        }
 
+        Thread thread = new Thread(this);
+        thread.start();
     }
 
+    @Override
+    public void run() {
+        try {
+            int player = fromServer.readInt();
+
+            if (player == PLAYER1) {
+                // logika w grze
+
+                fromServer.readInt();
+
+                myTurn = true;
+            } else if (player == PLAYER2) {
+                // logika gra
+
+
+            }
+
+            while (continueToPlay) {
+                if (player == PLAYER1) {
+                    waitForPlayerAction();
+                    sendMove();
+                    receiveInfoFromServer();
+                } else if (player == PLAYER2) {
+                    receiveInfoFromServer();
+                    waitForPlayerAction();
+                    sendMove();
+                }
+            }
+        } catch (IOException ex) {
+            System.err.println(ex);
+        }  catch (InterruptedException ex) {}
+    }
     private void waitForPlayerAction() throws InterruptedException {
         while (waiting) {
             Thread.sleep(100);
