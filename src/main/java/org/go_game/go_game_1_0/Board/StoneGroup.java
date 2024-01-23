@@ -4,40 +4,73 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StoneGroup {
-    private List<Stone> stones = new ArrayList<Stone>();
-    private StoneType groupType;
+    private final List<Stone> stones;
     private int breaths;
+    private final int size;
+    public StoneGroup(int size){
+        this.stones = new ArrayList<>();
+        this.size = size;
+        this.breaths = 0;
+    }
+    public void addStone(Stone stone){
+        if(!stones.contains(stone)){
+            stones.add(stone);
+            stone.setStoneGroup(this);
+            updateBreaths();
+        }
+    }
+    public void merge(StoneGroup stoneGroup){
+        for(Stone stone : stoneGroup.getStones()){
+            this.addStone(stone);
+        }
+        updateBreaths();
+    }
+    public List<Stone> getStones(){
+        return stones;
+    }
+    private void updateBreaths(){
+        breaths = 0;
 
-    StoneGroup(Stone stone){
-        stones.add(stone);
-        groupType = stone.getType();
-        breaths = stone.getBreaths();
+        for(Stone stone : stones){
+            updateBreaths(stone);
+        }
     }
-    void addStone(Stone stone){
-        stones.add(stone);
-        breaths+=stone.getBreaths();
-        breaths-=2;
+    private void updateBreaths(Stone stone){
+        int row = stone.getRow();
+        int col = stone.getCol();
+
+        checkAndAddBreath(row - 1, col);
+        checkAndAddBreath(row + 1, col);
+        checkAndAddBreath(row, col - 1);
+        checkAndAddBreath(row, col + 1);
     }
-    void removeStone(int x, int y){
-        for(int i=0;i<stones.size();i++){
-            if(x == stones.get(i).getX() && y == stones.get(i).getY()){
-                stones.remove(stones.get(i));
+    private void checkAndAddBreath(int row, int col){
+        if(isValidMove(row,col)){
+            Stone neighborStone = getStone(row,col);
+            if(neighborStone == null){
+                addBreath(row,col);
             }
         }
     }
-    public Stone getStone(int i){
-        return stones.get(i);
+    public void addBreath(int row, int col){
+        this.breaths++;
     }
-    List<Stone> getStones(){
-        return stones;
+    public int getBreaths(){
+        return breaths;
     }
-    boolean isDead(){
-        if(breaths>=0){
-            return true;
+    public void setBreaths(int breaths){
+        this.breaths = breaths;
+    }
+    private Stone getStone(int row,int col){
+        for(Stone stone : stones){
+            if(stone.getRow() == row && stone.getCol() == col){
+                return stone;
+            }
         }
-        return false;
+        return null;
     }
-    public int getSize(){
-        return stones.size();
+    private boolean isValidMove(int row, int col){
+        return row >= 0 && row < size && col >= 0 && col <= size;
     }
 }
+
