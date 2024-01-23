@@ -121,4 +121,21 @@ public class Board {
             }
         }
     }
+    public String getBoardToString(){
+        String board = "";
+        for(int i=0;i<size;i++){
+            for (int j=0;j<size;j++){
+                if(grid[i][j]!=null){
+                    if(grid[i][j].getStoneColor()==StoneColor.WHITE){
+                        board+=";W";
+                    }else{
+                        board+=";B";
+                    }
+                }else{
+                    board+=";N";
+                }
+            }
+        }
+        return board;
+    }
 }

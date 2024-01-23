@@ -37,6 +37,6 @@ public class BoardAppTestXD {
         if(board.getStone(0,0)!=null) {
             System.out.println(board.getStone(0, 0).getStoneGroup().getBreaths());
         }
-
+        System.out.println(board.getBoardToString());
     }
 }
