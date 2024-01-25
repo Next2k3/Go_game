@@ -34,6 +34,14 @@ public class NewSession implements Runnable {
             toPlayer1.writeInt(1);
 
             while (true) {
+
+                int row = fromPlayer1.readInt();
+                int column = fromPlayer1.readInt();
+                // !!! ustawienie kamienia na wybranym miejscu !!!
+
+
+
+
                 // logika gry do wysylania wiadomosci o wybranym
                 // miejscu na kamień
                 // metoda do wybierania kamienia i zmiany jego koloru
@@ -41,7 +49,7 @@ public class NewSession implements Runnable {
 
                 // LOGIKA do obsługi zasad i wygyranych
                 // Sprawdzanie, czy gracz 1 wygrał swoim ruchem
-//                if (isWon)
+                //if (isWon)
 
 
 
