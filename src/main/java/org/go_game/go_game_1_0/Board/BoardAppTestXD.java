@@ -25,25 +25,16 @@ public class BoardAppTestXD {
         Scanner scanner = new Scanner(System.in);
         int x;
         int y;
-        while(true){
-            x=scanner.nextInt();
-            y=scanner.nextInt();
-            board.placeStoneAndUpdateGroups(x,y,new Stone(StoneColor.BLACK,x,y));
+        while(true) {
+            x = scanner.nextInt();
+            y = scanner.nextInt();
+            board.placeStoneAndUpdateGroups(x, y, new Stone(StoneColor.BLACK, x, y));
             printBoard(board);
-            if(board.getStone(0,0)!= null) {
-                System.out.println(board.getStone(0, 0).getStoneGroup().getBreaths());
-            }else{
-                System.out.println("XD");
-            }
-            x=scanner.nextInt();
-            y=scanner.nextInt();
-            board.placeStoneAndUpdateGroups(x,y,new Stone(StoneColor.WHITE,x,y));
+
+            x = scanner.nextInt();
+            y = scanner.nextInt();
+            board.placeStoneAndUpdateGroups(x, y, new Stone(StoneColor.WHITE, x, y));
             printBoard(board);
-            if(board.getStone(0,0)!= null) {
-                System.out.println(board.getStone(0, 0).getStoneGroup().getBreaths());
-            }else {
-                System.out.println("XD");
-            }
         }
     }
 }

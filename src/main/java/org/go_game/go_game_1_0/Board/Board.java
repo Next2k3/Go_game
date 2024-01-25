@@ -6,21 +6,59 @@ import java.util.List;
 public class Board {
     private int size;
     private Stone[][] grid;
+    private List<Stone> blockedStonesWhite;
+    private List<Stone> blockedStonesBlack;
+    private StoneColor move;
 
     public Board(int size){
         this.size = size;
         this.grid = new Stone[size][size];
+        blockedStonesBlack = new ArrayList<>();
+        blockedStonesWhite = new ArrayList<>();
+        move = StoneColor.BLACK;
     }
-    public void placeStone(int row, int col, Stone stone){
-        if(isValidMoveorKillMove(row,col,stone) && grid[row][col] == null){
-            grid[row][col] = stone;
-        }  else {
+    public boolean placeStone(int row, int col, Stone stone) {
+        if (isValidMoveorKillMove(row, col, stone) && grid[row][col] == null) {
+            List<Stone> blockedStones = (stone.getStoneColor() == StoneColor.WHITE) ? blockedStonesWhite : blockedStonesBlack;
+            for(Stone stone1 :blockedStonesBlack){
+                System.out.println(stone1.getRow()+ " "+ stone1.getCol());
+            }
+            if (!isContain(row,col,stone.getStoneColor())) {
+                System.out.println("XD");
+                blockedStones.clear();
+                blockedStones.add(stone);
+                grid[row][col] = stone;
+                return true;
+            }
+            else{
+                System.out.println("Nieprawidłowy ruch na zajeta pozycji (" + row + ", " + col + ")");
+                blockedStones.clear();
+            }
+        } else {
             System.out.println("Nieprawidłowy ruch na pozycji (" + row + ", " + col + ")");
         }
+        if(move == StoneColor.BLACK){
+            move = StoneColor.WHITE;
+        }else{
+            move = StoneColor.BLACK;
+        }
+        return false;
+    }
+    private boolean isContain(int row,int col, StoneColor stoneColor){
+        List<Stone> blockedStones = (stoneColor == StoneColor.WHITE) ? blockedStonesWhite : blockedStonesBlack;
+        if(blockedStones.isEmpty()){
+            return false;
+        }
+        for(Stone stone : blockedStones){
+            if(stone.getRow()==row && stone.getCol()==col){
+                return true;
+            }
+        }
+        return false;
     }
     public Stone getStone(int row, int col){
         if(isValidMove(row,col)){
-             return grid[row][col];
+            return grid[row][col];
         } else {
             return null;
         }
@@ -36,7 +74,7 @@ public class Board {
     public boolean isValidMove(int row, int col) {
         return row >= 0 && row <= size - 1 && col >= 0 && col <= size - 1 ;
     }
-    private boolean isValidMoveorKillMove(int row, int col, Stone stone) {
+    public boolean isValidMoveorKillMove(int row, int col, Stone stone) {
         int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 
         for (int[] dir : directions) {
@@ -52,25 +90,28 @@ public class Board {
 
         return isValidMove(row, col);
     }
-    private boolean isKillMove(int row, int col, StoneColor stoneColor) {
+    public boolean isKillMove(int row, int col, StoneColor stoneColor) {
         return grid[row][col] != null && grid[row][col].getStoneColor() != stoneColor
                 && grid[row][col].getStoneGroup().getBreaths() == 1;
     }
     public void placeStoneAndUpdateGroups(int row,int col, Stone stone){
-        placeStone(row,col,stone);
+        if(placeStone(row,col,stone)) {
 
-        StoneGroup newStoneGroup = new StoneGroup(size);
+            StoneGroup newStoneGroup = new StoneGroup(size);
 
-        addStoneToGroup(row,col,newStoneGroup);
-        updateGroups(row,col,newStoneGroup);
-        updateAllGroupsBreaths();
+            addStoneToGroup(row, col, newStoneGroup);
+            updateGroups(row, col, newStoneGroup);
+            updateAllGroupsBreaths();
+        }
     }
     private void updateGroups(int row, int col, StoneGroup newStoneGroup){
         List<StoneGroup> neighboringGroups = getNeighbringGroups(row,col);
 
         for(StoneGroup stoneGroup : neighboringGroups){
-            if(newStoneGroup.getStones().get(0).getStoneColor()==stoneGroup.getStones().get(0).getStoneColor()) {
-                newStoneGroup.merge(stoneGroup);
+            if(newStoneGroup.getStones() != null ) {
+                if (newStoneGroup.getStones().getFirst().getStoneColor() == stoneGroup.getStones().getFirst().getStoneColor()) {
+                    newStoneGroup.merge(stoneGroup);
+                }
             }
         }
     }
@@ -118,8 +159,16 @@ public class Board {
             }
         }
         for(StoneGroup stoneGroup : stoneGroups){
-            updateBreathsForGroup(stoneGroup);
+            if(stoneGroup.getStones().getFirst().getStoneColor()!=move) {
+                updateBreathsForGroup(stoneGroup);
+            }
         }
+        for(StoneGroup stoneGroup : stoneGroups){
+            if(stoneGroup.getStones().getFirst().getStoneColor()==move) {
+                updateBreathsForGroup(stoneGroup);
+            }
+        }
+
     }
     private void updateBreathsForGroup(StoneGroup stoneGroup){
         stoneGroup.setBreaths(0);
@@ -127,9 +176,13 @@ public class Board {
         for(Stone stone : stoneGroup.getStones()) {
             updateBreaths(stoneGroup,stone.getRow(), stone.getCol());
         }
-
         if(stoneGroup.getBreaths()==0){
             for(Stone stone : stoneGroup.getStones()){
+                if(stone.getStoneColor()==StoneColor.WHITE){
+                    blockedStonesWhite=stoneGroup.getStones();
+                }else{
+                    blockedStonesBlack=stoneGroup.getStones();
+                }
                 removeStone(stone.getRow(),stone.getCol());
             }
         }
