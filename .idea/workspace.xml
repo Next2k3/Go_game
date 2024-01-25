@@ -4,20 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="febe2da9-2102-4118-b62a-e91ba076074b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/StoneGroup.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board_2/Board.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board_2/BoardAppTestXD.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board_2/Stone.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board_2/StoneColor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board_2/StoneGroup.java" afterDir="false" />
+    <list default="true" id="febe2da9-2102-4118-b62a-e91ba076074b" name="Changes" comment="Dodanie funkcji do komunikacji pomiędzy klientami poprzez serwer">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/BoardAppTestXD.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/StoneColor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/Board.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/Board.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/Stone.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/Stone.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/StoneGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/StoneGroup.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/StoneType.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/GameScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/GameScene.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Stone.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/Stone.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/StoneType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/StoneType.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +22,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Enum" />
         <option value="Class" />
       </list>
     </option>
@@ -46,11 +42,9 @@
       </MavenGeneralSettings>
     </option>
   </component>
-
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
-
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
 }</component>
@@ -62,7 +56,6 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-
     "Application.BoardAppTestXD.executor": "Run",
     "Application.Client.executor": "Run",
     "Application.HelloApplication.executor": "Run",
@@ -71,14 +64,11 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "kotlin-language-version-configured": "true",
-
+    "last_opened_file_path": "C:/Users/barto/Desktop/Go_game_10_najnowsze",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
-
-    "last_opened_file_path": "C:/Users/barto/Desktop/Go_game_10_najnowsze",
-
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
@@ -136,6 +126,15 @@
       <workItem from="1705251746771" duration="11000" />
       <workItem from="1705699257517" duration="5495000" />
     </task>
+    <task id="LOCAL-00001" summary="Dodanie funkcji do komunikacji pomiędzy klientami poprzez serwer">
+      <option name="closed" value="true" />
+      <created>1705862566649</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1705862566649</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -163,5 +162,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Dodanie funkcji do komunikacji pomiędzy klientami poprzez serwer" />
+    <option name="LAST_COMMIT_MESSAGE" value="Dodanie funkcji do komunikacji pomiędzy klientami poprzez serwer" />
   </component>
 </project>

@@ -2,49 +2,29 @@ package org.go_game.go_game_1_0.Board;
 
 
 public class Stone {
-    private StoneType stoneType;
-    private int x;
-    private int y;
-    private int breaths=4;
-    private Stone[] neighbours = new Stone[4];
-    Stone(StoneType stoneType){
-        this.stoneType = stoneType;
+    private StoneColor stoneColor;
+    private StoneGroup stoneGroup;
+    private int row;
+    private int col;
+
+    public Stone(StoneColor stoneColor,int row,int col){
+        this.stoneColor = stoneColor;
+        this.row = row;
+        this.col = col;
     }
-    Stone(int x,int y, StoneType stoneType){
-        this.stoneType = stoneType;
-        this.x = x;
-        this.y = y;
+    public void setStoneGroup(StoneGroup stoneGroup){
+        this.stoneGroup = stoneGroup;
     }
-    public StoneType getType(){
-        return stoneType;
+    public StoneColor getStoneColor(){
+        return stoneColor;
     }
-    public void addBreath(){
-        breaths++;
+    public StoneGroup getStoneGroup(){
+        return stoneGroup;
     }
-    public void removeBreath(){
-        breaths--;
+    public int getRow(){
+        return row;
     }
-    public void setStoneType(StoneType stoneType){
-        this.stoneType = stoneType;
-    }
-    public void setNeighbours(int x, Stone stone){
-        if(x>=0 && x<4){
-            neighbours[x]=stone;
-        }
-    }
-    public Stone getNeighbours(int x){
-        if(x>=0 && x<4){
-            return neighbours[x];
-        }
-        return new Stone(StoneType.NULL);
-    }
-    public int getX(){
-        return x;
-    }
-    public int getY(){
-        return y;
-    }
-    public int getBreaths(){
-        return breaths;
+    public int getCol(){
+        return col;
     }
 }

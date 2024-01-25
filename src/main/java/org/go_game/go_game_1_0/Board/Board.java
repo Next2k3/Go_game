@@ -4,77 +4,138 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
-
     private int size;
-    private Stone board[][];
-    private List<StoneGroup> stoneGroups = new ArrayList<StoneGroup>();
+    private Stone[][] grid;
 
     public Board(int size){
-        this.size =size;
-        this.board = new Stone[size][size];
-        for(int i=0;i<size;i++){
-            for(int j=0;j<size;j++){
-                board[i][j]= new Stone(i,j,StoneType.NULL);
-            }
+        this.size = size;
+        this.grid = new Stone[size][size];
+    }
+    public void placeStone(int row, int col, Stone stone){
+        if(isValidMove(row,col) && grid[row][col] == null){
+            grid[row][col] = stone;
+        }  else {
+            System.out.println("Nieprawidłowy ruch na pozycji (" + row + ", " + col + ")");
         }
     }
-    public int getsize(){
-        return this.size;
-    }
-    public boolean addStone(int x, int y, StoneType stoneType){
-        if(board[y][x].getType() == StoneType.NULL){
-            board[y][x] = new Stone(x,y,stoneType);
-            stoneGroups.add(new StoneGroup(board[y][x]));
-            if(x>0){
-                board[y][x].setNeighbours(0,board[y][x-1]);
-                board[y][x-1].setNeighbours(2,board[y][x]);
-            }else{
-                board[y][x].setNeighbours(0,new Stone(StoneType.NULL));
-            }
-            if(x<size-1){
-                board[y][x].setNeighbours(2,board[y][x+1]);
-                board[y][x+1].setNeighbours(0,board[y][x]);
-            }else{
-                board[y][x].setNeighbours(2,new Stone(StoneType.NULL));
-            }
-            if(y>0){
-                board[y][x].setNeighbours(3,board[y-1][x]);
-                board[y-1][x].setNeighbours(1,board[y][x]);
-            }else{
-                board[y][x].setNeighbours(3,new Stone(StoneType.NULL));
-            }
-            if(y<size-1){
-                board[y][x].setNeighbours(1,board[y+1][x]);
-                board[y+1][x].setNeighbours(3,board[y][x]);
-            }else{
-                board[y][x].setNeighbours(1,new Stone(StoneType.NULL));
-            }
-            stoneGroups= new ArrayList<StoneGroup>();
-            calcGroups(0,0);
-            return true;
+    public Stone getStone(int row, int col){
+        if(isValidMove(row,col)){
+            return grid[row][col];
+        } else {
+            return null;
         }
-        return false;
     }
-    public void calcGroups(int x,int y){
 
+    public void removeStone(int row, int col){
+        if(isValidMove(row,col)){
+            grid[row][col] = null;
+        } else {
+            System.out.println("Nieprawidłowa próba usunięcia kamienia z pozycji (" + row + ", " + col + ")");
+        }
     }
-    public boolean isStoneInGroups(Stone stone){
-        for(int i=0;i<stoneGroups.size();i++){
-            for(int j=0;j<stoneGroups.get(i).getSize();j++){
-                if(stoneGroups.get(i).getStone(j)==stone){
-                    return true;
+    public boolean isValidMove(int row, int col) {
+        return row >= 0 && row <= size - 1 && col >= 0 && col <= size - 1 ;
+    }
+    public void placeStoneAndUpdateGroups(int row,int col, Stone stone){
+        placeStone(row,col,stone);
+
+        StoneGroup newStoneGroup = new StoneGroup(size);
+        addStoneToGroupAndUpdateBreaths(row,col,newStoneGroup);
+        updateGroups(row,col,newStoneGroup);
+    }
+    private void updateGroups(int row, int col, StoneGroup newStoneGroup){
+        List<StoneGroup> neighboringGroups = getNeighbringGroups(row,col);
+
+        for(StoneGroup stoneGroup : neighboringGroups){
+            if(newStoneGroup.getStones().get(0).getStoneColor()==stoneGroup.getStones().get(0).getStoneColor()) {
+                newStoneGroup.merge(stoneGroup);
+            }
+        }
+    }
+    private List<StoneGroup> getNeighbringGroups(int row, int col){
+        List<StoneGroup> neighboringGroups = new ArrayList<>();
+
+        checkAndAddNeighbor(neighboringGroups, row - 1, col);
+        checkAndAddNeighbor(neighboringGroups, row + 1, col);
+        checkAndAddNeighbor(neighboringGroups, row, col - 1);
+        checkAndAddNeighbor(neighboringGroups, row, col + 1);
+
+        return neighboringGroups;
+    }
+    public void checkAndAddNeighbor(List<StoneGroup> neighboringGroups, int row, int col){
+        if (isValidMove(row, col)) {
+            Stone neighborStone = getStone(row, col);
+            if (neighborStone != null) {
+                StoneGroup neighborGroup = neighborStone.getStoneGroup();
+                if (!neighboringGroups.contains(neighborGroup)) {
+                    neighboringGroups.add(neighborGroup);
                 }
             }
         }
-        return false;
     }
-    public void setStone(int x,int y, StoneType stoneType){
-        board[y][x]= new Stone(x,y,stoneType);
-    }
-    public Stone getStone(int x, int y){
-        if(x<0 || y<0 || x>=size || y>=size){
-            return null;
+    private void addStoneToGroupAndUpdateBreaths(int row, int col, StoneGroup stoneGroup){
+        Stone stone = getStone(row,col);
+        if(stone != null){
+            stoneGroup.addStone(stone);
+            //updateBreathsForGroup(stoneGroup);
+            updateAlGroupsBreaths();
         }
-        return board[y][x];
+    }
+    private void updateAlGroupsBreaths(){
+        List<StoneGroup> stoneGroups = new ArrayList<>();
+        for(int i=0;i<size;i++){
+            for(int j=0;j<size;j++){
+                if(grid[i][j]!= null && grid[i][j].getStoneGroup()!=null){
+                    stoneGroups.add(grid[i][j].getStoneGroup());
+                }
+            }
+        }
+        for(StoneGroup stoneGroup : stoneGroups){
+            updateBreathsForGroup(stoneGroup);
+        }
+    }
+    private void updateBreathsForGroup(StoneGroup stoneGroup){
+        stoneGroup.setBreaths(0);
+
+        for(Stone stone : stoneGroup.getStones()) {
+            updateBreaths(stoneGroup,stone.getRow(), stone.getCol());
+        }
+
+        if(stoneGroup.getBreaths()==0){
+            for(Stone stone : stoneGroup.getStones()){
+                removeStone(stone.getRow(),stone.getCol());
+            }
+        }
+    }
+    private void updateBreaths(StoneGroup stoneGroup, int row,int col){
+        checkAndAddBreath(stoneGroup, row - 1, col);
+        checkAndAddBreath(stoneGroup, row + 1, col);
+        checkAndAddBreath(stoneGroup, row, col - 1);
+        checkAndAddBreath(stoneGroup, row, col + 1);
+    }
+    private void checkAndAddBreath(StoneGroup stoneGroup,int row, int col){
+        if(isValidMove(row,col)){
+            Stone neighborStone = getStone(row,col);
+            if(neighborStone == null){
+                stoneGroup.addBreath(row,col);
+            }
+        }
+    }
+    public String getBoardToString(){
+        String board = "";
+        for(int i=0;i<size;i++){
+            for (int j=0;j<size;j++){
+                if(grid[i][j]!=null){
+                    if(grid[i][j].getStoneColor()==StoneColor.WHITE){
+                        board+=";W";
+                    }else{
+                        board+=";B";
+                    }
+                }else{
+                    board+=";N";
+                }
+            }
+        }
+        return board;
     }
 }
