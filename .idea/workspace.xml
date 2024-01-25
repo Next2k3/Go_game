@@ -4,15 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="febe2da9-2102-4118-b62a-e91ba076074b" name="Changes" comment="Dodanie funkcji do komunikacji pomiędzy klientami poprzez serwer">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/BoardAppTestXD.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/StoneColor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/Board.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/Stone.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/Stone.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/StoneGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/StoneGroup.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/StoneType.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/GameScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/GameScene.java" afterDir="false" />
+    <list default="true" id="febe2da9-2102-4118-b62a-e91ba076074b" name="Changes" comment="Aktualizacja planszy itd">
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board_2/Board.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board_2/BoardAppTestXD.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board_2/Stone.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board_2/StoneColor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board_2/StoneGroup.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/NewSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/NewSession.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,6 +69,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -134,7 +134,15 @@
       <option name="project" value="LOCAL" />
       <updated>1705862566649</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Aktualizacja planszy itd">
+      <option name="closed" value="true" />
+      <created>1706176241458</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1706176241458</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -165,6 +173,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Dodanie funkcji do komunikacji pomiędzy klientami poprzez serwer" />
-    <option name="LAST_COMMIT_MESSAGE" value="Dodanie funkcji do komunikacji pomiędzy klientami poprzez serwer" />
+    <MESSAGE value="Aktualizacja planszy itd" />
+    <option name="LAST_COMMIT_MESSAGE" value="Aktualizacja planszy itd" />
   </component>
 </project>

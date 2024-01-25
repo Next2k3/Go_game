@@ -51,7 +51,9 @@ public class NewSession implements Runnable {
         }
     }
 
-    private void sendMove() {}
+    private void sendMove(int row, int col) throws IOException {
+
+    }
 
     private boolean isWon() {
         return false;
