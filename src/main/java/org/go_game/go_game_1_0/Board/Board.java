@@ -12,7 +12,7 @@ public class Board {
         this.grid = new Stone[size][size];
     }
     public void placeStone(int row, int col, Stone stone){
-        if(isValidMove(row,col) && grid[row][col] == null){
+        if(isValidMoveorKillMove(row,col,stone) && grid[row][col] == null){
             grid[row][col] = stone;
         }  else {
             System.out.println("Nieprawidłowy ruch na pozycji (" + row + ", " + col + ")");
@@ -36,12 +36,34 @@ public class Board {
     public boolean isValidMove(int row, int col) {
         return row >= 0 && row <= size - 1 && col >= 0 && col <= size - 1 ;
     }
+    private boolean isValidMoveorKillMove(int row, int col, Stone stone) {
+        int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+        for (int[] dir : directions) {
+            int newRow = row + dir[0];
+            int newCol = col + dir[1];
+
+            if (isValidMove(newRow, newCol) && isKillMove(newRow, newCol, stone.getStoneColor())) {
+                if (grid[newRow][newCol].getStoneColor() != stone.getStoneColor()) {
+                    return true;
+                }
+            }
+        }
+
+        return isValidMove(row, col);
+    }
+    private boolean isKillMove(int row, int col, StoneColor stoneColor) {
+        return grid[row][col] != null && grid[row][col].getStoneColor() != stoneColor
+                && grid[row][col].getStoneGroup().getBreaths() == 1;
+    }
     public void placeStoneAndUpdateGroups(int row,int col, Stone stone){
         placeStone(row,col,stone);
 
         StoneGroup newStoneGroup = new StoneGroup(size);
-        addStoneToGroupAndUpdateBreaths(row,col,newStoneGroup);
+
+        addStoneToGroup(row,col,newStoneGroup);
         updateGroups(row,col,newStoneGroup);
+        updateAllGroupsBreaths();
     }
     private void updateGroups(int row, int col, StoneGroup newStoneGroup){
         List<StoneGroup> neighboringGroups = getNeighbringGroups(row,col);
@@ -73,15 +95,20 @@ public class Board {
             }
         }
     }
+    private void addStoneToGroup(int row,int col,StoneGroup stoneGroup){
+        Stone stone = getStone(row,col);
+        if(stone != null){
+            stoneGroup.addStone(stone);
+        }
+    }
     private void addStoneToGroupAndUpdateBreaths(int row, int col, StoneGroup stoneGroup){
         Stone stone = getStone(row,col);
         if(stone != null){
             stoneGroup.addStone(stone);
-            //updateBreathsForGroup(stoneGroup);
-            updateAlGroupsBreaths();
+            updateAllGroupsBreaths();
         }
     }
-    private void updateAlGroupsBreaths(){
+    private void updateAllGroupsBreaths(){
         List<StoneGroup> stoneGroups = new ArrayList<>();
         for(int i=0;i<size;i++){
             for(int j=0;j<size;j++){
