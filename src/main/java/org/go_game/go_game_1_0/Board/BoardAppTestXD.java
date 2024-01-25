@@ -21,18 +21,18 @@ public class BoardAppTestXD {
     public static void main(String[] args){
         Board board = new Board(9);
 
-        board.placeStoneAndUpdateGroups(0,0,new Stone(StoneColor.BLACK,0,0));
+        board.placeStoneAndUpdateGroups(0,0,new Stone(StoneColor.BLACK,0,0, 15));
         printBoard(board);
         if(board.getStone(0,0)!=null) {
             System.out.println(board.getStone(0, 0).getStoneGroup().getBreaths());
         }
-        board.placeStoneAndUpdateGroups(1,0,new Stone(StoneColor.WHITE,1,0));
+        board.placeStoneAndUpdateGroups(1,0,new Stone(StoneColor.WHITE,1,0, 15));
         printBoard(board);
         if(board.getStone(0,0)!=null) {
             System.out.println(board.getStone(0, 0).getStoneGroup().getBreaths());
         }
 
-        board.placeStoneAndUpdateGroups(0,1,new Stone(StoneColor.WHITE,1,0));
+        board.placeStoneAndUpdateGroups(0,1,new Stone(StoneColor.WHITE,1,0, 15));
         printBoard(board);
         if(board.getStone(0,0)!=null) {
             System.out.println(board.getStone(0, 0).getStoneGroup().getBreaths());
