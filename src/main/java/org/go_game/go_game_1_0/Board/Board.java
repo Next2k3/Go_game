@@ -54,7 +54,6 @@ public class Board {
                 return true;
             }
         }
-        return false;
     }
     public Stone getStone(int row, int col){
         if(isValidMove(row,col)){

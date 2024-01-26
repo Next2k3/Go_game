@@ -25,6 +25,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Enum" />
         <option value="Class" />
       </list>
     </option>
@@ -111,6 +112,7 @@
       <workItem from="1705756714363" duration="3000" />
       <workItem from="1705941923000" duration="12187000" />
     </task>
+
     <task id="LOCAL-00001" summary="poprawa package Board i dodanie nowej package Board z alternatywna poprawiona implementacja">
       <option name="closed" value="true" />
       <created>1705711696679</created>

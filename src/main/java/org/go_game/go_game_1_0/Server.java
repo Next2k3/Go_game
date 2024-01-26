@@ -13,53 +13,37 @@ public class Server {
 
     public static void main(String[] args) throws Exception {
         System.out.println("Server is running...");
-//        ServerSocket listener = new ServerSocket(PORT);
-
-//        try {
-//            while (true) {
-//                new Handler(listener.accept()).start();
-//            }
-//        } finally {
-//            listener.close();
-//        }
-//    }
-
-//    private static class Handler extends Thread {
-//        private Socket socket;
-//        private PrintWriter out;
-//        private BufferedReader in;
-//
-//        public Handler(Socket socket) {
-//            this.socket = socket;
-//        }
-//
-//        public void run() {
-//            try {
-//                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//                out = new PrintWriter(socket.getOutputStream(), true);
-//
-//                writers.add(out);
-//
-//                while (true) {
-//                    String input = in.readLine();
-//                    if (input == null) {
-//                        return;
-//                    }
-//                    for (PrintWriter writer : writers) {
-//                        writer.println("MESSAGE " + input);
-//                    }
-//                }
-//            } catch (IOException e) {
-//                System.out.println(e);
-//            } finally {
-//                if (out != null) {
-//                    writers.remove(out);
-//                }
-//                try {
-//                    socket.close();
-//                } catch (IOException e) {
-//                }
-//            }
-//        }
+        Server display = new Server();
     }
+
+    public Server() {
+        // Wyglad servera w JavaFX
+
+        try {
+            ServerSocket serverSocket = new ServerSocket(12345);
+            // wyswietlenie "rozpoczecie serwera na porcie: 12345"
+            int sessionNum = 1;
+            while (true) {
+                // wyswietlenie "oczekiwanie na graczy"
+
+                Socket firstPlayer = serverSocket.accept();
+                // wyswietlenie "pierwszy gracz dolaczyl do sesji"
+                new DataOutputStream(firstPlayer.getOutputStream()).writeInt(PLAYER1);
+
+                Socket secondPlayer = serverSocket.accept();
+                // wysiwetlenie "drugi gracz dolaczyl"
+                new DataOutputStream(secondPlayer.getOutputStream()).writeInt(PLAYER2);
+
+                // Nowy wątek dla dwóch graczy
+                // wyswietlenie: "Tworzenie nowej sesji dla graczy"
+                NewSession task = new NewSession(firstPlayer, secondPlayer);
+                Thread t1 = new Thread(task);
+                t1.start();
+
+            }
+        } catch (IOException ex) {
+            System.err.println(ex);
+        }
+    }
+
 }

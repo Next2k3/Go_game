@@ -73,4 +73,3 @@ public class StoneGroup {
         return row >= 0 && row < size && col >= 0 && col <= size;
     }
 }
-

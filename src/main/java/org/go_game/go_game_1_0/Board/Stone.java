@@ -1,12 +1,15 @@
 package org.go_game.go_game_1_0.Board;
 
 
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+
 public class Stone {
     private StoneColor stoneColor;
     private StoneGroup stoneGroup;
     private int row;
     private int col;
-
+  
     public Stone(StoneColor stoneColor,int row,int col){
         this.stoneColor = stoneColor;
         this.row = row;
