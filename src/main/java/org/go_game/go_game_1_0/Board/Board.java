@@ -178,12 +178,14 @@ public class Board {
         }
         if(stoneGroup.getBreaths()==0){
             for(Stone stone : stoneGroup.getStones()){
-                if(stone.getStoneColor()==StoneColor.WHITE){
-                    blockedStonesWhite=stoneGroup.getStones();
-                }else{
-                    blockedStonesBlack=stoneGroup.getStones();
+                if(stone.getStoneGroup().getStones().size()==1) {
+                    if (stone.getStoneColor() == StoneColor.WHITE) {
+                        blockedStonesWhite = stoneGroup.getStones();
+                    } else {
+                        blockedStonesBlack = stoneGroup.getStones();
+                    }
                 }
-                removeStone(stone.getRow(),stone.getCol());
+                removeStone(stone.getRow(), stone.getCol());
             }
         }
     }
