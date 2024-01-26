@@ -9,26 +9,11 @@ public class Stone {
     private StoneGroup stoneGroup;
     private int row;
     private int col;
-    private Circle circle;
-
-    public Stone(StoneColor stoneColor,int row,int col, double radius){
+  
+    public Stone(StoneColor stoneColor,int row,int col){
         this.stoneColor = stoneColor;
         this.row = row;
         this.col = col;
-        this.circle = new Circle(radius);
-        if (stoneColor == StoneColor.BLACK) {
-            this.circle.setFill(Color.BLACK);
-        } else {
-            this.circle.setFill(Color.WHITE);
-        }
-    }
-
-    public Circle getCircle() {
-        return circle;
-    }
-
-    public void setCircle(Circle circle) {
-        this.circle = circle;
     }
     public void setStoneGroup(StoneGroup stoneGroup){
         this.stoneGroup = stoneGroup;
