@@ -20,7 +20,7 @@ public class Board {
     public boolean placeStone(int row, int col, Stone stone) {
         if (isValidMoveorKillMove(row, col, stone) && grid[row][col] == null) {
             List<Stone> blockedStones = (stone.getStoneColor() == StoneColor.WHITE) ? blockedStonesWhite : blockedStonesBlack;
-            for(Stone stone1 :blockedStonesBlack){
+            for(Stone stone1 :blockedStones){
                 System.out.println(stone1.getRow()+ " "+ stone1.getCol());
             }
             if (!isContain(row,col,stone.getStoneColor())) {
@@ -54,6 +54,7 @@ public class Board {
                 return true;
             }
         }
+        return false;
     }
     public Stone getStone(int row, int col){
         if(isValidMove(row,col)){
