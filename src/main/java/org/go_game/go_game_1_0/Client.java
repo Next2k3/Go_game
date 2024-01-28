@@ -16,7 +16,7 @@ public class Client extends Application implements Runnable {
     public static final int PLAYER2 = 2;
     public static final int PLAYER1_WON = 1;
     public static final int PLAYER2_WON = 2;
-    public static final int DRAW = 3;
+    public static int DRAW = 3;
 
     private boolean myTurn = false;
     private boolean waiting = true;
@@ -101,6 +101,7 @@ public class Client extends Application implements Runnable {
         } catch (IOException ex) {
             System.err.println(ex);
         }  catch (InterruptedException ex) {}
+
     }
     private void waitForPlayerAction() throws InterruptedException {
         while (waiting) {
