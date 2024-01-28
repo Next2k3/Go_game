@@ -30,4 +30,8 @@ public class Stone {
     public int getCol(){
         return col;
     }
+
+    public void setColor() {
+
+    }
 }

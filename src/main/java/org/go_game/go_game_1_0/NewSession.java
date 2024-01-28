@@ -59,8 +59,9 @@ public class NewSession implements Runnable {
         }
     }
 
-    private void sendMove(int row, int col) throws IOException {
-
+    private void sendMove(DataOutputStream out, int row, int column) throws IOException {
+        out.writeInt(row);
+        out.writeInt(column);
     }
 
     private boolean isWon() {

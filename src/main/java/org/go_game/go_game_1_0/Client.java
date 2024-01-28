@@ -31,8 +31,11 @@ public class Client extends Application implements Runnable {
 
     StoneColor stoneColor;
 
+    private StoneColor myColor = null;
+    private StoneColor otherColor = null;
 
 
+    private BoardPane boardPane;
     public static void main(String[] args) throws Exception {
         Client display = new Client();
         // ewwntualne ustawienie wielkosci planszy itd.
@@ -70,13 +73,16 @@ public class Client extends Application implements Runnable {
             int player = fromServer.readInt();
 
             if (player == PLAYER1) {
+                myColor = StoneColor.WHITE;
+                otherColor = StoneColor.BLACK;
                 // logika w grze
 
                 fromServer.readInt();
 
                 myTurn = true;
             } else if (player == PLAYER2) {
-                // logika gra
+                myColor = StoneColor.BLACK;
+                otherColor = StoneColor.WHITE;
 
 
             }
@@ -143,7 +149,11 @@ public class Client extends Application implements Runnable {
     private void receiveMove() throws IOException {
         int row = fromServer.readInt();
         int column = fromServer.readInt();
-
+        if(myColor==StoneColor.BLACK) {
+            boardPane.setStoneColor(row, column,StoneColor.WHITE );
+        }else{
+            boardPane.setStoneColor(row,column,StoneColor.BLACK);
+        }
     }
 
     @Override
