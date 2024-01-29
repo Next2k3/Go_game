@@ -1,5 +1,7 @@
 package org.go_game.go_game_1_0;
 
+import org.go_game.go_game_1_0.Board.StoneColor;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -40,6 +42,7 @@ public class NewSession implements Runnable {
                 // !!! ustawienie kamienia na wybranym miejscu !!!
 
 
+                // OBIEKT TYPU PRZYCISK ?? (TO CZYM SA KAMINIE)
 
 
                 // logika gry do wysylania wiadomosci o wybranym
