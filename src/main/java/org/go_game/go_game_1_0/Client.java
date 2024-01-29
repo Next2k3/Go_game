@@ -1,6 +1,7 @@
 package org.go_game.go_game_1_0;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -107,6 +108,7 @@ public class Client extends Application implements Runnable {
                 myColor = StoneColor.BLACK;
                 otherColor = StoneColor.WHITE;
 
+                myTurn = false;
 
             }
 
@@ -134,8 +136,11 @@ public class Client extends Application implements Runnable {
     }
 
     private void sendMove() throws IOException {
-        toServer.writeInt(rowSelected);
-        toServer.writeInt(columnSelected);
+        if (myTurn = true) {
+            toServer.writeInt(rowSelected);
+            toServer.writeInt(columnSelected);
+        }
+
     }
 
     private void receiveInfoFromServer() throws IOException {
@@ -173,11 +178,14 @@ public class Client extends Application implements Runnable {
     private void receiveMove() throws IOException {
         int row = fromServer.readInt();
         int column = fromServer.readInt();
-        if(myColor==StoneColor.BLACK) {
-            boardPane.setStoneColor(row, column,StoneColor.WHITE );
-        }else{
-            boardPane.setStoneColor(row,column,StoneColor.BLACK);
-        }
+        Platform.runLater(() -> {
+            if(myColor==StoneColor.BLACK) {
+                boardPane.setStoneColor(row, column,StoneColor.WHITE );
+            }else{
+                boardPane.setStoneColor(row,column,StoneColor.BLACK);
+            }
+        });
+
     }
 
 //    @Override
