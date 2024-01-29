@@ -39,9 +39,9 @@ public class Client extends Application implements Runnable {
 
     private BoardPane boardPane;
     public static void main(String[] args) throws Exception {
-        Client display = new Client();
-        // ewwntualne ustawienie wielkosci planszy itd.
-        display.init();
+//        Client display = new Client();
+//        // ewwntualne ustawienie wielkosci planszy itd.
+//        display.init();
 
         // Uruchamianie JavaFX w głównym wątku
          launch(args);
