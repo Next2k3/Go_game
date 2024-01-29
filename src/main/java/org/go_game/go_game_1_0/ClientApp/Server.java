@@ -1,10 +1,5 @@
 package org.go_game.go_game_1_0.ClientApp;
 
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.TextArea;
-import javafx.stage.Stage;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;

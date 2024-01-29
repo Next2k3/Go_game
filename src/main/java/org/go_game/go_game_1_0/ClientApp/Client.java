@@ -43,10 +43,6 @@ public class Client extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-//        this.primaryStage = primaryStage;
-//        this.primaryStage.setTitle("Go...");
-//        showMenu();
-//        connectToServer();
         try {
             socket = new Socket("localhost", 6789);
             out = new PrintWriter(socket.getOutputStream(), true);
@@ -54,22 +50,6 @@ public class Client extends Application {
 
             myColor = in.readLine();
             myTurn = myColor.equals("CZ");
-//            GridPane grid = new GridPane();
-//            for (int i = 0; i < 9; i++) {
-//                for (int j = 0; j < 9; j++) {
-//                    circles[i][j] = new Circle(25, Color.BROWN);
-//                    circles[i][j].setStroke(Color.BLACK);
-//                    int finalI = i;
-//                    int finalJ = j;
-//                    circles[i][j].setOnMouseClicked(e -> makeMove(finalI, finalJ));
-//                    grid.add(circles[i][j], j, i);
-//                }
-//            }
-//            Scene scene = new Scene(grid, 600, 600);
-//            primaryStage.setTitle("Gra GO - " + myColor);
-//            primaryStage.setScene(scene);
-//            primaryStage.show();
-
             int size = 9;
             StoneColor[][] stoneColors = new StoneColor[size][size];
 
