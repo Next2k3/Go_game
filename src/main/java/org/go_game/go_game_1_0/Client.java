@@ -63,7 +63,12 @@ public class Client extends Application implements Runnable {
             columnSelected = boardPane.getY();
             boardPane.setStoneColor(rowSelected,columnSelected,StoneColor.BLACK);
             stage.setScene(new Scene(boardPane.getBoardPane()));
-            System.out.println("Updated x and y in TestXD: " + rowSelected + " " + columnSelected);
+//            System.out.println("Updated x and y in TestXD: " + rowSelected + " " + columnSelected);
+            try {
+                sendMove();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         });
         Scene scene = new Scene(boardPane.getBoardPane()) ;
         stage.setScene(scene);

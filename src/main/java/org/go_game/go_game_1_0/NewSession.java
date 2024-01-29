@@ -7,6 +7,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+import static org.go_game.go_game_1_0.Board.StoneColor.BLACK;
+import static org.go_game.go_game_1_0.Board.StoneColor.WHITE;
+
 public class NewSession implements Runnable {
 
     public static int PLAYER1_WON = 1;
@@ -16,6 +19,7 @@ public class NewSession implements Runnable {
 
     private Socket firstPlayer;
     private Socket secondPlayer;
+    private StoneColor[][] stoneColor = new StoneColor[9][9]; // NIE JESTEM PEWIEN
 
     public NewSession(Socket firstPlayer, Socket secondPlayer) {
         this.firstPlayer = firstPlayer;
@@ -43,6 +47,7 @@ public class NewSession implements Runnable {
 
 
                 // OBIEKT TYPU PRZYCISK ?? (TO CZYM SA KAMINIE)
+                stoneColor[row][column] = WHITE;
 
 
                 // logika gry do wysylania wiadomosci o wybranym
@@ -54,6 +59,12 @@ public class NewSession implements Runnable {
                 // Sprawdzanie, czy gracz 1 wygrał swoim ruchem
                 //if (isWon)
 
+                toPlayer2.writeInt(CONTINUE);
+                sendMove(toPlayer2, row, column);
+
+                row = fromPlayer2.readInt();
+                column = fromPlayer2.readInt();
+                stoneColor[row][column] = BLACK;
 
 
             }
