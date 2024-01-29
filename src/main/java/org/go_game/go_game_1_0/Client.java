@@ -1,6 +1,8 @@
 package org.go_game.go_game_1_0;
 
 import javafx.application.Application;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.go_game.go_game_1_0.Board.Stone;
 import org.go_game.go_game_1_0.Board.StoneColor;
@@ -45,11 +47,27 @@ public class Client extends Application implements Runnable {
          launch(args);
     }
 
-    public void init() {
-        // inicjalizacja planszy do gry
-        // i całego okienka (tytul, przzyciski itd.)
+    @Override
+    public void start(Stage stage) {
+        StoneColor[][] stoneColors = new StoneColor[9][9];
+        for(int i=0;i<9;i++){
+            for(int j=0;j<9;j++){
+                stoneColors[i][j]=null;
+            }
+        }
+        stoneColors[1][1]= StoneColor.WHITE;
 
-
+        BoardPane boardPane = new BoardPane(9,stoneColors);
+        boardPane.addXYChangeListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+            rowSelected = boardPane.getX();
+            columnSelected = boardPane.getY();
+            boardPane.setStoneColor(rowSelected,columnSelected,StoneColor.BLACK);
+            stage.setScene(new Scene(boardPane.getBoardPane()));
+            System.out.println("Updated x and y in TestXD: " + rowSelected + " " + columnSelected);
+        });
+        Scene scene = new Scene(boardPane.getBoardPane()) ;
+        stage.setScene(scene);
+        stage.show();
 
         connectToServer();
     }
@@ -157,10 +175,10 @@ public class Client extends Application implements Runnable {
         }
     }
 
-    @Override
-    public void start(Stage stage) throws Exception {
-        MenuScene menuScene = new MenuScene(stage);
-        stage.setScene(menuScene.getScene());
-        stage.show();
-    }
+//    @Override
+//    public void start(Stage stage) throws Exception {
+//        MenuScene menuScene = new MenuScene(stage);
+//        stage.setScene(menuScene.getScene());
+//        stage.show();
+//    }
 }
