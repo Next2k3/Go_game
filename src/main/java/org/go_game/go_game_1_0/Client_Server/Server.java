@@ -1,4 +1,4 @@
-package org.go_game.go_game_1_0.ClientNew3;
+package org.go_game.go_game_1_0.Client_Server;
 
 import java.io.*;
 import java.net.ServerSocket;

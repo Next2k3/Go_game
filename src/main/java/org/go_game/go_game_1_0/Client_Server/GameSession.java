@@ -1,4 +1,4 @@
-package org.go_game.go_game_1_0.ClientNew3;
+package org.go_game.go_game_1_0.Client_Server;
 
 import org.go_game.go_game_1_0.Board.Board;
 import org.go_game.go_game_1_0.Board.Stone;
@@ -6,7 +6,6 @@ import org.go_game.go_game_1_0.Board.StoneColor;
 
 import java.io.*;
 import java.net.Socket;
-import java.time.DayOfWeek;
 
 public class GameSession extends Thread {
     public static int PLAYER1_WON = 1;

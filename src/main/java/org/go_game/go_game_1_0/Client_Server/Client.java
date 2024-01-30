@@ -1,4 +1,4 @@
-package org.go_game.go_game_1_0.ClientNew3;
+package org.go_game.go_game_1_0.Client_Server;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -10,7 +10,6 @@ import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.*;
@@ -19,16 +18,12 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import org.go_game.go_game_1_0.Board.Board;
-import org.go_game.go_game_1_0.Board.Stone;
 import org.go_game.go_game_1_0.Board.StoneColor;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class Client extends Application implements Runnable {
     public static final int PLAYER1_WON = 1;
@@ -416,24 +411,7 @@ public class Client extends Application implements Runnable {
             } else {
                 stoneColors[i / size][i % size] = null;
             }
-        }/*
-        int row = inputStream.readInt();
-        int column = inputStream.readInt();
-
-        if(myTurn) {
-            if (myColor == StoneColor.BLACK) {
-                stoneColors[column][row] = StoneColor.BLACK;
-            } else if (myColor == StoneColor.WHITE) {
-                stoneColors[column][row] = StoneColor.WHITE;
-            }
-        }else{
-            if (myColor == StoneColor.BLACK) {
-                stoneColors[column][row] = StoneColor.WHITE;
-            } else if (myColor == StoneColor.WHITE) {
-                stoneColors[column][row] = StoneColor.BLACK;
-            }
         }
-        */
         Platform.runLater(() -> {
             HBox hBox = (HBox) scene.getRoot();
             GridPane gridPane = (GridPane) hBox.lookup("#gridPane"); // ID kontenera GridPane
