@@ -1,0 +1,23 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name = "org.go_game.go_game_1_0.ClientApp.Ruch" table = "ruchy">
+
+        <meta attribute = "class-description">
+            This class contains the employee detail.
+        </meta>
+
+        <id name = "id" type = "int" column = "id">
+            <generator class="identity"/>
+        </id>
+
+        <property name="pozycjaX" column="pozycja_x"/>
+        <property name="pozycjaY" column="pozycja_y"/>
+        <property name="kolor" column="kolor"/>
+        <property name="czasRuchu" column="czas_ruchu"/>
+
+    </class>
+</hibernate-mapping>

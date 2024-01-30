@@ -1,8 +1,12 @@
 package org.go_game.go_game_1_0.ClientApp;
 
+
+import org.hibernate.Session;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +18,7 @@ public class Server  {
         serverSocket = new ServerSocket(port);
         clients = new ArrayList<>();
     }
+
 
     public void start() throws IOException {
 
@@ -30,13 +35,35 @@ public class Server  {
 
     public synchronized void makeMove(String move, Socket sender) throws IOException {
         String kolor = clients.indexOf(sender) == 0 ? "CZ" : "B";
+
+        // Przekazanie ruchu do innych klientów
         for (Socket client : clients) {
             if (client != sender) {
                 PrintWriter out = new PrintWriter(client.getOutputStream(), true);
                 out.println(move + "," + kolor);
             }
         }
+        // Zapis ruchu do bazy danych
+        zapiszRuch(move, kolor);
+
     }
+
+
+    private void zapiszRuch(String move, String kolor) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+
+        Ruch ruch = new Ruch();
+        ruch.setMove(move);
+        ruch.setId(1);
+        ruch.setKolor(kolor);
+        ruch.setCzasRuchu(LocalDateTime.now());
+
+        session.save(ruch);
+        session.getTransaction().commit();
+        session.close();
+    }
+
     public static void main(String[] args) throws IOException {
         Server server = new Server(6789);
         server.start();
