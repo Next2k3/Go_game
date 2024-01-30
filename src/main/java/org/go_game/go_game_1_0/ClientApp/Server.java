@@ -1,14 +1,14 @@
 package org.go_game.go_game_1_0.ClientApp;
 
-
-import org.hibernate.Session;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.time.LocalDateTime;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class Server  {
     private ServerSocket serverSocket;
@@ -35,7 +35,6 @@ public class Server  {
 
     public synchronized void makeMove(String move, Socket sender) throws IOException {
         String kolor = clients.indexOf(sender) == 0 ? "CZ" : "B";
-
         // Przekazanie ruchu do innych klientów
         for (Socket client : clients) {
             if (client != sender) {
@@ -43,25 +42,31 @@ public class Server  {
                 out.println(move + "," + kolor);
             }
         }
-        // Zapis ruchu do bazy danych
-        zapiszRuch(move, kolor);
+        saveMoveToDatabase(move, kolor);
 
     }
 
+    private void saveMoveToDatabase(String move, String kolor) {
+        String jdbcURL = "jdbc:mysql://localhost:3306/test";
+        String username = "root";
+        String password = "cimvyD-4warje-siqcux";
 
-    private void zapiszRuch(String move, String kolor) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
+        System.out.println("Próba zapisu ruchu do bazy danych...");
 
-        Ruch ruch = new Ruch();
-        ruch.setMove(move);
-        ruch.setId(1);
-        ruch.setKolor(kolor);
-        ruch.setCzasRuchu(LocalDateTime.now());
+        try (Connection connection = DriverManager.getConnection(jdbcURL, username, password)) {
+            System.out.println("Połączenie z bazą danych udane.");
 
-        session.save(ruch);
-        session.getTransaction().commit();
-        session.close();
+            String sql = "INSERT INTO ruchy (ruch, kolor) VALUES (?, ?)";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, move);
+                preparedStatement.setString(2, kolor);
+                preparedStatement.executeUpdate();
+                System.out.println("Ruch zapisany do bazy danych: Ruch = " + move + ", Kolor = " + kolor);
+            }
+        } catch (SQLException e) {
+            System.err.println("Błąd podczas zapisywania ruchu do bazy danych: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) throws IOException {
@@ -97,4 +102,3 @@ public class Server  {
         }
     }
 }
-

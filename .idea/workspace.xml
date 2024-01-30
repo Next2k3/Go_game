@@ -4,17 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="febe2da9-2102-4118-b62a-e91ba076074b" name="Changes" comment="usunięcie niepotrzebnego kodu">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/ClientApp/HibernateUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/ClientApp/Ruch.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/Ruch.hbm.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/db.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_01_2024_08_19__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_01_2024_08_19__Changes_.xml" afterDir="false" />
+    <list default="true" id="febe2da9-2102-4118-b62a-e91ba076074b" name="Changes" comment="Dodanie hibernate (uszkodzone kolorowanie okręgów) - problem z synchronizacją przesyłania ruchów i zapisem do bazy danych">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/baza_danych/db.mysql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/ClientApp/HibernateUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/ClientApp/Ruch.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/ClientApp/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/ClientApp/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Ruch.hbm.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/db.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,6 +85,9 @@
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="org.go_game.go_game_1_0.ClientApp" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\barto\Desktop\Go_game_1.0_kon\src\main\java\org\go_game\go_game_1_0\DataBase" />
       <recent name="C:\Users\barto\Desktop\Go_game_1.0_kon\src\main\resources" />
@@ -260,7 +262,15 @@
       <option name="project" value="LOCAL" />
       <updated>1706565435427</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Dodanie hibernate (uszkodzone kolorowanie okręgów) - problem z synchronizacją przesyłania ruchów i zapisem do bazy danych">
+      <option name="closed" value="true" />
+      <created>1706621745709</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1706621745710</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -299,7 +309,8 @@
     <MESSAGE value="Working client-server communication" />
     <MESSAGE value="Working client-server communication - working game (just turns)" />
     <MESSAGE value="usunięcie niepotrzebnego kodu" />
-    <option name="LAST_COMMIT_MESSAGE" value="usunięcie niepotrzebnego kodu" />
+    <MESSAGE value="Dodanie hibernate (uszkodzone kolorowanie okręgów) - problem z synchronizacją przesyłania ruchów i zapisem do bazy danych" />
+    <option name="LAST_COMMIT_MESSAGE" value="Dodanie hibernate (uszkodzone kolorowanie okręgów) - problem z synchronizacją przesyłania ruchów i zapisem do bazy danych" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
