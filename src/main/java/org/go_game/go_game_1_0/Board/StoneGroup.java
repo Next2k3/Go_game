@@ -70,6 +70,6 @@ public class StoneGroup {
         return null;
     }
     private boolean isValidMove(int row, int col){
-        return row >= 0 && row < size && col >= 0 && col <= size;
+        return row >= 0 && row < size && col >= 0 && col < size;
     }
 }

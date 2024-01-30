@@ -4,9 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="febe2da9-2102-4118-b62a-e91ba076074b" name="Changes" comment="oczyszczenie plików">
+    <list default="true" id="febe2da9-2102-4118-b62a-e91ba076074b" name="Changes" comment="poprawenie bledu">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/Board.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/Stone.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/Stone.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/StoneGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/StoneGroup.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Client_Server/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Client_Server/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Client_Server/GameSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Client_Server/GameSession.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,7 +92,7 @@
       <recent name="C:\Users\barto\Desktop\Go_game_1.0_kon\src\main\resources" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Server">
+  <component name="RunManager" selected="Application.org.go_game.go_game_1_0.Client_Server.Client">
     <configuration name="BoardAppTestXD" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.go_game.go_game_1_0.Board.BoardAppTestXD" />
       <module name="Go_game_1_0" />
@@ -115,7 +119,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Server" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="Server" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.go_game.go_game_1_0.Client_Server.Server" />
       <module name="Go_game_1_0" />
       <extension name="coverage">
@@ -182,7 +186,6 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Server" />
         <item itemvalue="Application.BoardAppTestXD" />
         <item itemvalue="Application.org.go_game.go_game_1_0.ClientApp.Client" />
         <item itemvalue="Application.clientTEST" />
@@ -213,7 +216,7 @@
       <workItem from="1705941923000" duration="12187000" />
       <workItem from="1706631816442" duration="80000" />
       <workItem from="1706632685218" duration="8477000" />
-      <workItem from="1706641318233" duration="4116000" />
+      <workItem from="1706641318233" duration="17228000" />
     </task>
     <task id="LOCAL-00001" summary="poprawa package Board i dodanie nowej package Board z alternatywna poprawiona implementacja">
       <option name="closed" value="true" />
@@ -327,7 +330,15 @@
       <option name="project" value="LOCAL" />
       <updated>1706645413477</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="poprawenie bledu">
+      <option name="closed" value="true" />
+      <created>1706645451862</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1706645451862</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -371,7 +382,8 @@
     <MESSAGE value="nowy client serwer" />
     <MESSAGE value="dodanie działajacego client-serwer" />
     <MESSAGE value="oczyszczenie plików" />
-    <option name="LAST_COMMIT_MESSAGE" value="oczyszczenie plików" />
+    <MESSAGE value="poprawenie bledu" />
+    <option name="LAST_COMMIT_MESSAGE" value="poprawenie bledu" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -2,8 +2,6 @@ package org.go_game.go_game_1_0.Client_Server;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -11,7 +9,6 @@ import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -97,6 +94,8 @@ public class Client extends Application implements Runnable {
         vBox.getChildren().addAll(label,button1,button2,button3);
         Scene menuScene = new Scene(vBox);
         stage.setScene(menuScene);
+        stage.setMinHeight(350);
+        stage.setMinWidth(350);
         this.scene =menuScene;
         stage.show();
     }
@@ -107,7 +106,7 @@ public class Client extends Application implements Runnable {
         vBox.setPadding(new Insets(10));
         vBox.setMinWidth(300);
 
-        Label label = new Label("Wybierz rozmiar");
+        Label label = new Label("Goo...");
         label.setFont(Font.font(75));
         label.setTextFill(Color.WHITE);
 
@@ -164,9 +163,6 @@ public class Client extends Application implements Runnable {
         stage.show();
     }
     private void startGame() {
-        ObservableList<String> moveHistory = FXCollections.observableArrayList();
-        ListView<String> moveHistoryListView = new ListView<>(moveHistory);
-
         HBox hBox = new HBox();
         hBox.setBackground(Background.fill(Color.rgb(26,26,26)));
 
@@ -195,8 +191,6 @@ public class Client extends Application implements Runnable {
                         rowSelected = Math.max(0, x);
                         columnSelected = Math.max(0, y);
                         waiting = false;
-                        String moveInfo = "(" + x + ", " + y + ")";
-                        moveHistory.add(moveInfo);
                     }
                 });
 
@@ -228,42 +222,65 @@ public class Client extends Application implements Runnable {
 
         VBox vBox = new VBox(15);
 
-        moveHistoryListView.setStyle("-fx-background-color: #262626");
-        moveHistoryListView.setMinHeight(450);
 
-        vBox.getChildren().add(moveHistoryListView);
+        VBox vBox1 = new VBox(15);
 
-        HBox hBox1 = new HBox(15);
+        Button button1 = new Button("Poddaj się");
+        button1.setFont(new Font(15));
+        button1.setMinWidth(150);
+        button1.setStyle("-fx-background-color: #595959");
+        button1.setTextFill(Color.WHITE);
 
-        Button giveUpButton = new Button("Przerwij");
-        giveUpButton.setFont(new Font(15));
-        giveUpButton.setMinWidth(150);
-        giveUpButton.setStyle("-fx-background-color: #595959");
-        giveUpButton.setTextFill(Color.WHITE);
+        button1.setOnMouseEntered(e -> button1.setStyle("-fx-background-color: lightgray;"));
+        button1.setOnMouseExited(e -> button1.setStyle("-fx-background-color: #595959;"));
+        button1.setOnAction(e->{
 
-        giveUpButton.setOnMouseEntered(e -> giveUpButton.setStyle("-fx-background-color: lightgray;"));
-        giveUpButton.setOnMouseExited(e -> giveUpButton.setStyle("-fx-background-color: #595959;"));
+        });
 
-        Button rematchButton = new Button("Rewanż");
-        rematchButton.setFont(new Font(15));
-        rematchButton.setMinWidth(150);
-        rematchButton.setStyle("-fx-background-color: #595959");
-        rematchButton.setTextFill(Color.WHITE);
+        Button button2 = new Button("Pomiń ture");
+        button2.setFont(new Font(15));
+        button2.setMinWidth(150);
+        button2.setStyle("-fx-background-color: #595959");
+        button2.setTextFill(Color.WHITE);
 
-        rematchButton.setOnMouseEntered(e -> rematchButton.setStyle("-fx-background-color: lightgray;"));
-        rematchButton.setOnMouseExited(e -> rematchButton.setStyle("-fx-background-color: #595959;"));
+        button2.setOnMouseEntered(e -> button2.setStyle("-fx-background-color: lightgray;"));
+        button2.setOnMouseExited(e -> button2.setStyle("-fx-background-color: #595959;"));
+        button2.setOnAction(e->{
+            waiting = false;
+            rowSelected=-1;
+            columnSelected=-1;
+        });
+
+        Button button3 = new Button("Wróć do menu ");
+        button3.setFont(new Font(15));
+        button3.setMinWidth(150);
+        button3.setStyle("-fx-background-color: #595959");
+        button3.setTextFill(Color.WHITE);
+
+        button3.setOnMouseEntered(e -> button3.setStyle("-fx-background-color: lightgray;"));
+        button3.setOnMouseExited(e -> button3.setStyle("-fx-background-color: #595959;"));
+        button3.setOnAction(e->{
+            showMenu();
+            try {
+                socket.close();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
         HBox hBox2 = new HBox(gridPane);
         hBox2.setPadding(new Insets(15));
         hBox.getChildren().add(hBox2);
-        hBox1.getChildren().add(giveUpButton);
-        hBox1.getChildren().add(rematchButton);
-        vBox.getChildren().add(hBox1);
+        vBox1.getChildren().add(button1);
+        vBox1.getChildren().add(button2);
+        vBox1.getChildren().add(button3);
+        vBox.getChildren().add(vBox1);
         vBox.setPadding(new Insets(15));
         hBox.getChildren().add(vBox);
         Scene gameScene = new Scene(hBox);
-
         stage.setScene(gameScene);
+        stage.setMinHeight(575);
+        stage.setMinWidth(725);
         this.scene=gameScene;
         connectToServer();
     }
@@ -283,7 +300,7 @@ public class Client extends Application implements Runnable {
         thread.start();
     }
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         this.stage = stage;
         stage.setTitle("Goo...");
 

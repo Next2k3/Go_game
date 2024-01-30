@@ -1,7 +1,9 @@
 package org.go_game.go_game_1_0.Board;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Board {
     private int size;
@@ -9,6 +11,8 @@ public class Board {
     private List<Stone> blockedStonesWhite;
     private List<Stone> blockedStonesBlack;
     private StoneColor move;
+    private int deadBlackStones;
+    private int deadWhiteStones;
 
     public Board(int size){
         this.size = size;
@@ -16,32 +20,37 @@ public class Board {
         blockedStonesBlack = new ArrayList<>();
         blockedStonesWhite = new ArrayList<>();
         move = StoneColor.BLACK;
+        deadBlackStones=0;
+        deadWhiteStones=0;
     }
     public boolean placeStone(int row, int col, Stone stone) {
-        if (isValidMoveorKillMove(row, col, stone) && grid[row][col] == null) {
+        if (isValidMoveorKillMove(row, col, stone) && grid[row][col] == null){
             List<Stone> blockedStones = (stone.getStoneColor() == StoneColor.WHITE) ? blockedStonesWhite : blockedStonesBlack;
-            for(Stone stone1 :blockedStones){
-                System.out.println(stone1.getRow()+ " "+ stone1.getCol());
-            }
-            if (!isContain(row,col,stone.getStoneColor())) {
+            if (!isContain(row, col, stone.getStoneColor())) {
                 blockedStones.clear();
                 blockedStones.add(stone);
                 grid[row][col] = stone;
+                if(move == StoneColor.BLACK){
+                    move = StoneColor.WHITE;
+                }else{
+                    move = StoneColor.BLACK;
+                }
                 return true;
-            }
-            else{
+            } else {
                 System.out.println("Nieprawidłowy ruch na zajeta pozycji (" + row + ", " + col + ")");
                 blockedStones.clear();
             }
         } else {
             System.out.println("Nieprawidłowy ruch na pozycji (" + row + ", " + col + ")");
         }
+        return false;
+    }
+    public void changeMoveColor(){
         if(move == StoneColor.BLACK){
             move = StoneColor.WHITE;
         }else{
             move = StoneColor.BLACK;
         }
-        return false;
     }
     private boolean isContain(int row,int col, StoneColor stoneColor){
         List<Stone> blockedStones = (stoneColor == StoneColor.WHITE) ? blockedStonesWhite : blockedStonesBlack;
@@ -65,7 +74,13 @@ public class Board {
 
     public void removeStone(int row, int col){
         if(isValidMove(row,col)){
+            if(grid[row][col].getStoneColor()==StoneColor.WHITE){
+                deadWhiteStones++;
+            }else{
+                deadBlackStones++;
+            }
             grid[row][col] = null;
+
         } else {
             System.out.println("Nieprawidłowa próba usunięcia kamienia z pozycji (" + row + ", " + col + ")");
         }
@@ -81,23 +96,28 @@ public class Board {
             int newCol = col + dir[1];
 
             if (isValidMove(newRow, newCol) && isKillMove(newRow, newCol, stone.getStoneColor())) {
-                if (grid[newRow][newCol].getStoneColor() != stone.getStoneColor()) {
-                    return true;
-                }
+                return true;
             }
         }
 
         return isValidMove(row, col);
     }
-    public boolean isPosibleMove(int row,int col, StoneColor stoneColor){
-        if(grid[row][col]==null && isValidMove(row,col)){
-            return true;
+    public boolean isPosibleMove(int row,int col, Stone stone){
+        if (isValidMoveorKillMove(row, col, stone) && grid[row][col] == null){
+            if (!isContain(row, col, stone.getStoneColor())) {
+                return false;
+            }
         }
-        return false;
+        return true;
     }
     public boolean isKillMove(int row, int col, StoneColor stoneColor) {
-        return grid[row][col] != null && grid[row][col].getStoneColor() != stoneColor
-                && grid[row][col].getStoneGroup().getBreaths() == 1;
+        if(grid[row][col]==null){
+            return false;
+        }else if(grid[row][col].getStoneColor() != stoneColor
+                && grid[row][col].getStoneGroup().getBreaths() == 1){
+            return true;
+        }
+        return true;
     }
     public boolean placeStoneAndUpdateGroups(int row,int col, Stone stone){
         if(placeStone(row,col,stone)) {
@@ -228,4 +248,37 @@ public class Board {
         }
         return board;
     }
+    public int[] zliczPunkty() {
+        int[] punkty = new int[2];  // Indeks 0 - punkty dla czarnego, Indeks 1 - punkty dla białego
+
+        // Utwórz zbiory, aby śledzić obszary, które zostały już zliczone
+        Set<StoneGroup> zliczoneObszaryCzarne = new HashSet<>();
+        Set<StoneGroup> zliczoneObszaryBiałe = new HashSet<>();
+
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (grid[i][j] != null) {
+                    Stone stone = grid[i][j];
+                    StoneGroup stoneGroup = stone.getStoneGroup();
+
+                    // Jeśli obszar nie został jeszcze zliczony, zlicz punkty
+                    if (stoneGroup != null && !zliczoneObszaryCzarne.contains(stoneGroup) && !zliczoneObszaryBiałe.contains(stoneGroup)) {
+                        int punktyObszaru = stoneGroup.getBreaths();
+                        if (stone.getStoneColor() == StoneColor.BLACK) {
+                            punkty[0] += punktyObszaru;
+                            zliczoneObszaryCzarne.add(stoneGroup);
+                        } else if (stone.getStoneColor() == StoneColor.WHITE) {
+                            punkty[1] += punktyObszaru;
+                            zliczoneObszaryBiałe.add(stoneGroup);
+                        }
+                    }
+                }
+            }
+        }
+
+        punkty[0]+=deadBlackStones;
+        punkty[1]+=deadWhiteStones;
+        return punkty;
+    }
 }
+

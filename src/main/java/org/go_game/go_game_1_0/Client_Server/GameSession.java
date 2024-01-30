@@ -28,6 +28,7 @@ public class GameSession extends Thread {
 
     @Override
     public void run() {
+        int skips = 0;
         try {
             DataInputStream fromPlayer1 = new DataInputStream(player1Socket.getInputStream());
             DataOutputStream toPlayer1 = new DataOutputStream(player1Socket.getOutputStream());
@@ -37,41 +38,62 @@ public class GameSession extends Thread {
 
 
             while(true){
-                int row = fromPlayer1.readInt();
-                int column = fromPlayer1.readInt();
+                if(skips==2){
+                    if(board.zliczPunkty()[0]>board.zliczPunkty()[1]){
+                        toPlayer1.writeInt(PLAYER1_WON);
+                        toPlayer2.writeInt(PLAYER1_WON);
+                    }else if(board.zliczPunkty()[0]<board.zliczPunkty()[1]){
+                        toPlayer1.writeInt(PLAYER2_WON);
+                        toPlayer2.writeInt(PLAYER2_WON);
+                    }else{
+                        toPlayer1.writeInt(DRAW);
+                        toPlayer2.writeInt(DRAW);
+                    }
+                }else {
+                    skips = 0;
+                    int row = fromPlayer1.readInt();
+                    int column = fromPlayer1.readInt();
 
-                while(!board.isPosibleMove(row,column,StoneColor.BLACK)){
-                    toPlayer1.writeInt(UNCORRECTMOVE);
-                    row = fromPlayer1.readInt();
-                    column = fromPlayer1.readInt();
+                    if (row != -1 && column != -1) {
+                        while (!board.placeStoneAndUpdateGroups(row, column, new Stone(StoneColor.BLACK, row, column))) {
+                            toPlayer1.writeInt(UNCORRECTMOVE);
+                            row = fromPlayer1.readInt();
+                            column = fromPlayer1.readInt();
 
-                }
-                board.placeStoneAndUpdateGroups(row,column,new Stone(StoneColor.BLACK,row,column));
+                        }
+                        board.placeStoneAndUpdateGroups(row, column, new Stone(StoneColor.BLACK, row, column));
 
-                toPlayer1.writeInt(CORRECTMOVE);
-                sendMove(toPlayer1);
+                    } else {
+                        board.changeMoveColor();
+                        skips++;
+                    }
+                    toPlayer1.writeInt(CORRECTMOVE);
+                    sendMove(toPlayer1);
 
-                toPlayer2.writeInt(CONTINUE);
-                sendMove(toPlayer2);
+                    toPlayer2.writeInt(CONTINUE);
+                    sendMove(toPlayer2);
 
-
-                row = fromPlayer2.readInt();
-                column = fromPlayer2.readInt();
-
-                while(!board.isPosibleMove(row,column,StoneColor.WHITE)){
-                    toPlayer1.writeInt(UNCORRECTMOVE);
                     row = fromPlayer2.readInt();
                     column = fromPlayer2.readInt();
+
+                    if (row != -1 && column != -1) {
+                        while (!board.placeStoneAndUpdateGroups(row, column, new Stone(StoneColor.WHITE, row, column))) {
+                            toPlayer2.writeInt(UNCORRECTMOVE);
+                            row = fromPlayer2.readInt();
+                            column = fromPlayer2.readInt();
+                        }
+                        board.placeStoneAndUpdateGroups(row, column, new Stone(StoneColor.WHITE, row, column));
+                    } else {
+                        board.changeMoveColor();
+                        skips++;
+                    }
+
+                    toPlayer2.writeInt(CORRECTMOVE);
+                    sendMove(toPlayer2);
+
+                    toPlayer1.writeInt(CONTINUE);
+                    sendMove(toPlayer1);
                 }
-                board.placeStoneAndUpdateGroups(row,column,new Stone(StoneColor.WHITE,row,column));
-
-                toPlayer2.writeInt(CORRECTMOVE);
-                sendMove(toPlayer2);
-
-                toPlayer1.writeInt(CONTINUE);
-                sendMove(toPlayer1);
-
-
             }
 
         } catch (IOException e) {
