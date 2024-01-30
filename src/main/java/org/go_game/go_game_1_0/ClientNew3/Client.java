@@ -1,4 +1,4 @@
-package org.go_game.go_game_1_0.ClientNew2;
+package org.go_game.go_game_1_0.ClientNew3;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -23,22 +23,28 @@ import org.go_game.go_game_1_0.Board.StoneColor;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Scanner;
 
-public class Client extends Application {
+public class Client extends Application implements Runnable {
+    public static final int PLAYER1_WON = 1;
+    public static final int PLAYER2_WON = 2;
+    public static final int DRAW = 3;
+    public static final int CORRECTMOVE = 4;
+
+    private Socket socket;
+    private DataInputStream inputStream;
+    private DataOutputStream outputStream;
+    private int rowSelected;
+    private int columnSelected;
+    private int size;
     private StoneColor[][] stoneColors;
     private Stage stage;
     private StoneColor myColor;
-
-    @Override
-    public void start(Stage stage) throws Exception {
-        this.stage = stage;
-        stage.setTitle("Goo...");
-
-        showMenu();
-
-        //connectToServer();
-    }
+    private boolean continueToPlay = true;
+    private boolean waiting = true;
+    private boolean myTurn = false;
     private void showMenu() {
         VBox vBox = new VBox(10);
         vBox.setAlignment(Pos.CENTER);
@@ -144,6 +150,7 @@ public class Client extends Application {
         stage.show();
     }
     private void startGame(int size) {
+        this.size = size;
         stoneColors = new StoneColor[size][size];
 
         ObservableList<String> moveHistory = FXCollections.observableArrayList();
@@ -172,8 +179,9 @@ public class Client extends Application {
                 circle.setOnMouseClicked(e->{
                     int x= (int) Math.round(e.getSceneX()/55.0)-1;
                     int y= (int) Math.round(e.getSceneY()/55.0)-1;
-                    x = Math.max(0, x);
-                    y = Math.max(0, y);
+                    rowSelected = Math.max(0, x);
+                    columnSelected = Math.max(0, y);
+                    waiting = false;
                     String moveInfo = "(" + x + ", " + y + ")";
                     moveHistory.add(moveInfo);
                 });
@@ -242,16 +250,134 @@ public class Client extends Application {
         Scene gameScene = new Scene(hBox);
 
         stage.setScene(gameScene);
+        connectToServer();
     }
-    private void updateMove(int row, int col, String messege){
-        if(messege.equals("Accepted")){
-            stoneColors[row][col]=myColor;
-        }else{
-            System.out.println("Server rejected the move");
-        }
-    }
-
-    public static void main(String[] args){
+    public static void main(String[] args) {
         launch(args);
     }
+    private void connectToServer() {
+        try {
+            socket = new Socket("localhost", 8000);
+            outputStream = new DataOutputStream(socket.getOutputStream());
+            inputStream = new DataInputStream(socket.getInputStream());
+        } catch (IOException ex) {
+            System.err.println(ex);
+        }
+
+        Thread thread = new Thread(this);
+        thread.start();
+    }
+    @Override
+    public void start(Stage stage) throws Exception {
+        this.stage = stage;
+        stage.setTitle("Goo...");
+
+        showMenu();
+    }
+
+    @Override
+    public void run() {
+        try {
+            // Wczytaj rozmiar planszy od użytkownika
+            System.out.print("Podaj rozmiar planszy: ");
+
+            // Wyślij rozmiar planszy do serwera
+            outputStream.writeInt(size);
+
+            if(inputStream.readInt()==1){
+                myColor=StoneColor.BLACK;
+                myTurn=true;
+            }else{
+                myColor=StoneColor.WHITE;
+            }
+            System.out.println(myColor);
+
+
+            while(continueToPlay){
+                if(myColor == StoneColor.BLACK){
+                    waitForPlayerAction();
+                    System.out.println("1");
+                    sendMove();
+                    System.out.println("11");
+                    recieveInfoFromServer();
+                    System.out.println("12");
+                }else if(myColor == StoneColor.WHITE){
+                    recieveInfoFromServer();
+                    System.out.println("2");
+                    waitForPlayerAction();
+                    System.out.println("21");
+                    sendMove();
+                    System.out.println("22");
+                }
+            }
+            // Tutaj możesz umieścić kod do obsługi rozmiaru planszy i innych działań
+
+            // Zamknij połączenie
+            //socket.close();
+        } catch (IOException ex) {
+            System.err.println(ex);
+        } catch (InterruptedException ex) {}
+    }
+    private void recieveInfoFromServer() throws IOException {
+        int status = inputStream.readInt();
+
+        if (status == PLAYER1_WON) {
+            continueToPlay = false;
+            if (myColor == StoneColor.BLACK) {
+                //statusLabel.setText("I Won! (X)");
+            }
+            else if (myColor == StoneColor.WHITE) {
+                //statusLabel.setText("Player 1 (X) has won!");
+                recieveMove();
+            }
+        }
+        else if (status == PLAYER2_WON) {
+            continueToPlay = false;
+            if (myColor == StoneColor.WHITE) {
+               // statusLabel.setText("I Won! (O)");
+            }
+            else if (myColor == StoneColor.BLACK) {
+               // statusLabel.setText("Player 2 (O) has won!");
+                recieveMove();
+            }
+        }
+        else if (status == DRAW) {
+            continueToPlay = false;
+            //statusLabel.setText("Game is over, no winner!");
+
+            if (myColor == StoneColor.WHITE) {
+                recieveMove();
+            }
+        }
+        else if(status == CORRECTMOVE){
+            recieveMove();
+            myTurn = false;
+        }
+        else {
+            recieveMove();
+           // statusLabel.setText("My turn");
+            myTurn = true;
+        }
+    }
+    private void waitForPlayerAction() throws InterruptedException {
+        while (waiting) {
+            Thread.sleep(100);
+        }
+        waiting = true;
+    }
+    private void sendMove() throws IOException {
+        outputStream.writeInt(rowSelected);
+        outputStream.writeInt(columnSelected);
+    }
+    private void recieveMove() throws IOException {
+        int row = inputStream.readInt();
+        int column = inputStream.readInt();
+        if(myColor==StoneColor.BLACK){
+            stoneColors[row][column]=StoneColor.WHITE;
+        }else if(myColor==StoneColor.WHITE){
+            stoneColors[row][column]=StoneColor.BLACK;
+        }
+        stage.show();
+    }
 }
+

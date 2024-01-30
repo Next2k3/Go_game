@@ -24,7 +24,6 @@ public class Board {
                 System.out.println(stone1.getRow()+ " "+ stone1.getCol());
             }
             if (!isContain(row,col,stone.getStoneColor())) {
-                System.out.println("XD");
                 blockedStones.clear();
                 blockedStones.add(stone);
                 grid[row][col] = stone;
@@ -94,7 +93,7 @@ public class Board {
         return grid[row][col] != null && grid[row][col].getStoneColor() != stoneColor
                 && grid[row][col].getStoneGroup().getBreaths() == 1;
     }
-    public void placeStoneAndUpdateGroups(int row,int col, Stone stone){
+    public boolean placeStoneAndUpdateGroups(int row,int col, Stone stone){
         if(placeStone(row,col,stone)) {
 
             StoneGroup newStoneGroup = new StoneGroup(size);
@@ -102,6 +101,9 @@ public class Board {
             addStoneToGroup(row, col, newStoneGroup);
             updateGroups(row, col, newStoneGroup);
             updateAllGroupsBreaths();
+            return true;
+        }else{
+            return false;
         }
     }
     private void updateGroups(int row, int col, StoneGroup newStoneGroup){

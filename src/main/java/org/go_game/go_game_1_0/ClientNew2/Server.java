@@ -47,7 +47,7 @@ public class Server extends Application {
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 appendMessage("Nowe połącznie od klienta: "+ clientSocket);
-                handleClient(clientSocket);
+               // handleClient(clientSocket);
             }
         } catch (IOException ex) {
             System.err.println(ex);
