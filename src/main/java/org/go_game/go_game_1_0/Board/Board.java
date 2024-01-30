@@ -89,6 +89,12 @@ public class Board {
 
         return isValidMove(row, col);
     }
+    public boolean isPosibleMove(int row,int col, StoneColor stoneColor){
+        if(grid[row][col]==null && isValidMove(row,col)){
+            return true;
+        }
+        return false;
+    }
     public boolean isKillMove(int row, int col, StoneColor stoneColor) {
         return grid[row][col] != null && grid[row][col].getStoneColor() != stoneColor
                 && grid[row][col].getStoneGroup().getBreaths() == 1;
@@ -209,14 +215,14 @@ public class Board {
         String board = "";
         for(int i=0;i<size;i++){
             for (int j=0;j<size;j++){
-                if(grid[i][j]!=null){
-                    if(grid[i][j].getStoneColor()==StoneColor.WHITE){
-                        board+=";W";
+                if(grid[j][i]!=null){
+                    if(grid[j][i].getStoneColor()==StoneColor.WHITE){
+                        board+="W";
                     }else{
-                        board+=";B";
+                        board+="B";
                     }
                 }else{
-                    board+=";N";
+                    board+="N";
                 }
             }
         }

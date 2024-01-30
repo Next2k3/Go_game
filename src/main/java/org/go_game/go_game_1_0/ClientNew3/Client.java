@@ -10,6 +10,7 @@ import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.*;
@@ -18,6 +19,8 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import org.go_game.go_game_1_0.Board.Board;
+import org.go_game.go_game_1_0.Board.Stone;
 import org.go_game.go_game_1_0.Board.StoneColor;
 
 import java.io.DataInputStream;
@@ -32,6 +35,7 @@ public class Client extends Application implements Runnable {
     public static final int PLAYER2_WON = 2;
     public static final int DRAW = 3;
     public static final int CORRECTMOVE = 4;
+    private static final int UNCORRECTMOVE = 5;
 
     private Socket socket;
     private DataInputStream inputStream;
@@ -41,6 +45,7 @@ public class Client extends Application implements Runnable {
     private int size;
     private StoneColor[][] stoneColors;
     private Stage stage;
+    private Scene scene;
     private StoneColor myColor;
     private boolean continueToPlay = true;
     private boolean waiting = true;
@@ -97,6 +102,7 @@ public class Client extends Application implements Runnable {
         vBox.getChildren().addAll(label,button1,button2,button3);
         Scene menuScene = new Scene(vBox);
         stage.setScene(menuScene);
+        this.scene =menuScene;
         stage.show();
     }
     private void showChoseMenu(){
@@ -139,20 +145,30 @@ public class Client extends Application implements Runnable {
         button3.setOnMouseEntered(e -> button3.setStyle("-fx-background-color: lightgray;"));
         button3.setOnMouseExited(e -> button3.setStyle("-fx-background-color: default;"));
 
-        button1.setOnAction(e -> startGame(9));
+        button1.setOnAction(e -> {
+            this.size = 9;
+            stoneColors = new StoneColor[9][9];
+            startGame();
+        });
 
-        button2.setOnAction(e -> startGame(13));
+        button2.setOnAction(e -> {
+            this.size = 13;
+            stoneColors = new StoneColor[13][13];
+            startGame();
+        });
 
-        button3.setOnAction(e -> startGame(19));
+        button3.setOnAction(e -> {
+            this.size = 19;
+            stoneColors = new StoneColor[19][19];
+            startGame();
+        });
         vBox.getChildren().addAll(label,button1,button2,button3);
         Scene menuScene = new Scene(vBox);
         stage.setScene(menuScene);
+        this.scene = menuScene;
         stage.show();
     }
-    private void startGame(int size) {
-        this.size = size;
-        stoneColors = new StoneColor[size][size];
-
+    private void startGame() {
         ObservableList<String> moveHistory = FXCollections.observableArrayList();
         ListView<String> moveHistoryListView = new ListView<>(moveHistory);
 
@@ -161,6 +177,7 @@ public class Client extends Application implements Runnable {
 
         GridPane gridPane = new GridPane();
         gridPane.setStyle("-fx-background-color: #DEB887");
+        gridPane.setId("gridPane");  // Dodaj to ID
 
         for(int i=0;i<size;i++){
             for(int j=0;j<size;j++) {
@@ -177,13 +194,15 @@ public class Client extends Application implements Runnable {
                 }
 
                 circle.setOnMouseClicked(e->{
-                    int x= (int) Math.round(e.getSceneX()/55.0)-1;
-                    int y= (int) Math.round(e.getSceneY()/55.0)-1;
-                    rowSelected = Math.max(0, x);
-                    columnSelected = Math.max(0, y);
-                    waiting = false;
-                    String moveInfo = "(" + x + ", " + y + ")";
-                    moveHistory.add(moveInfo);
+                    if(myTurn) {
+                        int x= (int) Math.round(e.getSceneX()/55.0)-1;
+                        int y= (int) Math.round(e.getSceneY()/55.0)-1;
+                        rowSelected = Math.max(0, x);
+                        columnSelected = Math.max(0, y);
+                        waiting = false;
+                        String moveInfo = "(" + x + ", " + y + ")";
+                        moveHistory.add(moveInfo);
+                    }
                 });
 
                 Line lineV = new Line();
@@ -250,6 +269,7 @@ public class Client extends Application implements Runnable {
         Scene gameScene = new Scene(hBox);
 
         stage.setScene(gameScene);
+        this.scene=gameScene;
         connectToServer();
     }
     public static void main(String[] args) {
@@ -289,6 +309,7 @@ public class Client extends Application implements Runnable {
                 myTurn=true;
             }else{
                 myColor=StoneColor.WHITE;
+                myTurn = false;
             }
             System.out.println(myColor);
 
@@ -296,31 +317,24 @@ public class Client extends Application implements Runnable {
             while(continueToPlay){
                 if(myColor == StoneColor.BLACK){
                     waitForPlayerAction();
-                    System.out.println("1");
                     sendMove();
-                    System.out.println("11");
                     recieveInfoFromServer();
-                    System.out.println("12");
+                    recieveInfoFromServer();
                 }else if(myColor == StoneColor.WHITE){
                     recieveInfoFromServer();
-                    System.out.println("2");
                     waitForPlayerAction();
-                    System.out.println("21");
                     sendMove();
-                    System.out.println("22");
+                    recieveInfoFromServer();
                 }
             }
-            // Tutaj możesz umieścić kod do obsługi rozmiaru planszy i innych działań
-
-            // Zamknij połączenie
-            //socket.close();
+            socket.close();
         } catch (IOException ex) {
             System.err.println(ex);
         } catch (InterruptedException ex) {}
     }
-    private void recieveInfoFromServer() throws IOException {
+    private void recieveInfoFromServer() throws IOException, InterruptedException {
         int status = inputStream.readInt();
-
+        System.out.println(status);
         if (status == PLAYER1_WON) {
             continueToPlay = false;
             if (myColor == StoneColor.BLACK) {
@@ -348,14 +362,19 @@ public class Client extends Application implements Runnable {
             if (myColor == StoneColor.WHITE) {
                 recieveMove();
             }
-        }
-        else if(status == CORRECTMOVE){
+        }else if(status == CORRECTMOVE){
             recieveMove();
+
             myTurn = false;
+        }else if(status == UNCORRECTMOVE){
+            waiting = true;
+            waitForPlayerAction();
+            sendMove();
+            recieveInfoFromServer();
         }
         else {
             recieveMove();
-           // statusLabel.setText("My turn");
+
             myTurn = true;
         }
     }
@@ -368,16 +387,58 @@ public class Client extends Application implements Runnable {
     private void sendMove() throws IOException {
         outputStream.writeInt(rowSelected);
         outputStream.writeInt(columnSelected);
+        System.out.println(rowSelected+" "+columnSelected+" "+myColor);
     }
+    private void refreshBoardView(GridPane gridPane) {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                Circle circle = (Circle) ((StackPane) gridPane.getChildren().get(i * size + j)).getChildren().get(2);
+
+                if (stoneColors[i][j] == null) {
+                    circle.setFill(Color.BURLYWOOD);
+                } else if (stoneColors[i][j] == StoneColor.WHITE) {
+                    circle.setFill(Color.WHITE);
+                } else {
+                    circle.setFill(Color.BLACK);
+                }
+            }
+        }
+    }
+
     private void recieveMove() throws IOException {
+        String tablica = inputStream.readUTF();
+        for (int i = 0; i < tablica.length(); i++) {
+            char symbol = tablica.charAt(i);
+            if (symbol == 'B') {
+                stoneColors[i / size][i % size] = StoneColor.BLACK;
+            } else if (symbol == 'W') {
+                stoneColors[i / size][i % size] = StoneColor.WHITE;
+            } else {
+                stoneColors[i / size][i % size] = null;
+            }
+        }/*
         int row = inputStream.readInt();
         int column = inputStream.readInt();
-        if(myColor==StoneColor.BLACK){
-            stoneColors[row][column]=StoneColor.WHITE;
-        }else if(myColor==StoneColor.WHITE){
-            stoneColors[row][column]=StoneColor.BLACK;
+
+        if(myTurn) {
+            if (myColor == StoneColor.BLACK) {
+                stoneColors[column][row] = StoneColor.BLACK;
+            } else if (myColor == StoneColor.WHITE) {
+                stoneColors[column][row] = StoneColor.WHITE;
+            }
+        }else{
+            if (myColor == StoneColor.BLACK) {
+                stoneColors[column][row] = StoneColor.WHITE;
+            } else if (myColor == StoneColor.WHITE) {
+                stoneColors[column][row] = StoneColor.BLACK;
+            }
         }
-        stage.show();
+        */
+        Platform.runLater(() -> {
+            HBox hBox = (HBox) scene.getRoot();
+            GridPane gridPane = (GridPane) hBox.lookup("#gridPane"); // ID kontenera GridPane
+            refreshBoardView(gridPane);
+        });
     }
 }
 

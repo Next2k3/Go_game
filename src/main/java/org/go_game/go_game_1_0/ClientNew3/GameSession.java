@@ -13,7 +13,8 @@ public class GameSession extends Thread {
     public static int PLAYER2_WON = 2;
     public static int DRAW = 3;
     public static final int CORRECTMOVE = 4;
-    public static int CONTINUE = 5;
+    private static final int UNCORRECTMOVE = 5;
+    public static int CONTINUE = 6;
     private Socket player1Socket;
     private Socket player2Socket;
     private int boardSize;
@@ -39,24 +40,38 @@ public class GameSession extends Thread {
             while(true){
                 int row = fromPlayer1.readInt();
                 int column = fromPlayer1.readInt();
-                System.out.println(row+" "+column);
+
+                while(!board.isPosibleMove(row,column,StoneColor.BLACK)){
+                    toPlayer1.writeInt(UNCORRECTMOVE);
+                    row = fromPlayer1.readInt();
+                    column = fromPlayer1.readInt();
+
+                }
                 board.placeStoneAndUpdateGroups(row,column,new Stone(StoneColor.BLACK,row,column));
 
                 toPlayer1.writeInt(CORRECTMOVE);
+                sendMove(toPlayer1);
+
                 toPlayer2.writeInt(CONTINUE);
-                sendMove(toPlayer2, row, column);
-                sendMove(toPlayer1,row,column);
+                sendMove(toPlayer2);
 
 
                 row = fromPlayer2.readInt();
                 column = fromPlayer2.readInt();
-                System.out.println(row+" "+column);
+
+                while(!board.isPosibleMove(row,column,StoneColor.WHITE)){
+                    toPlayer1.writeInt(UNCORRECTMOVE);
+                    row = fromPlayer2.readInt();
+                    column = fromPlayer2.readInt();
+                }
                 board.placeStoneAndUpdateGroups(row,column,new Stone(StoneColor.WHITE,row,column));
 
                 toPlayer2.writeInt(CORRECTMOVE);
+                sendMove(toPlayer2);
+
                 toPlayer1.writeInt(CONTINUE);
-                sendMove(toPlayer1, row, column);
-                sendMove(toPlayer2,row,column);
+                sendMove(toPlayer1);
+
 
             }
 
@@ -65,9 +80,9 @@ public class GameSession extends Thread {
         }
 
     }
-    private void sendMove(DataOutputStream out, int row, int column) throws IOException {
-        out.writeInt(row);
-        out.writeInt(column);
+    private void sendMove(DataOutputStream out) throws IOException {
+        String tablica =board.getBoardToString();
+        out.writeUTF(tablica);
     }
 }
 

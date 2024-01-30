@@ -65,8 +65,6 @@ public class Server {
         } else {
             // Dodaj klienta do oczekujących
             waitingClients.put(boardSize, clientSocket);
-            out.writeUTF("WAITING");
-            out.flush();
         }
     }
 
