@@ -5,15 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="febe2da9-2102-4118-b62a-e91ba076074b" name="Changes" comment="Dodanie hibernate (uszkodzone kolorowanie okręgów) - problem z synchronizacją przesyłania ruchów i zapisem do bazy danych">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/baza_danych/db.mysql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/ClientNew/Client.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/ClientNew/Server.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/ClientNew/Session.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/ClientNew2/Client.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/ClientNew2/Server.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/ClientNew2/Session.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_01_2024_08_19__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_01_2024_08_19__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/ClientApp/HibernateUtil.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/ClientApp/Ruch.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/ClientApp/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/ClientApp/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Ruch.hbm.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/db.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,33 +56,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Application.BoardAppTestXD.executor": "Run",
-    "Application.Client.executor": "Run",
-    "Application.HelloApplication.executor": "Run",
-    "Application.Server.executor": "Run",
-    "Application.TestXD.executor": "Run",
-    "Application.clientTEST.executor": "Run",
-    "Application.org.go_game.go_game_1_0.ClientApp.Client.executor": "Run",
-    "Application.serverTEST.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/barto/Desktop/Go_game_1.0_aktualne",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.45517242",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Application.BoardAppTestXD.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Client.executor&quot;: &quot;Run&quot;,
+    &quot;Application.HelloApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Server.executor&quot;: &quot;Run&quot;,
+    &quot;Application.TestXD.executor&quot;: &quot;Run&quot;,
+    &quot;Application.clientTEST.executor&quot;: &quot;Run&quot;,
+    &quot;Application.org.go_game.go_game_1_0.ClientApp.Client.executor&quot;: &quot;Run&quot;,
+    &quot;Application.serverTEST.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/barto/Desktop/Go_game_1.0_aktualne&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.45517242&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="org.go_game.go_game_1_0.ClientApp" />
@@ -189,6 +188,7 @@
       <workItem from="1705699257517" duration="6262000" />
       <workItem from="1705756714363" duration="3000" />
       <workItem from="1705941923000" duration="12187000" />
+      <workItem from="1706631816442" duration="47000" />
     </task>
     <task id="LOCAL-00001" summary="poprawa package Board i dodanie nowej package Board z alternatywna poprawiona implementacja">
       <option name="closed" value="true" />
