@@ -289,5 +289,13 @@ public class Board {
         punkty[1]+=deadWhiteStones;
         return punkty;
     }
+
+    public int getDeadBlackStones() {
+        return deadBlackStones;
+    }
+
+    public void setDeadBlackStones(int deadBlackStones) {
+        this.deadBlackStones = deadBlackStones;
+    }
 }
 
