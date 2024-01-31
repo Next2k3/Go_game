@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Random;
 
@@ -117,8 +118,152 @@ public class Client extends Application implements Runnable {
     }
 
     private void showDatabaseGame() {
+        VBox vBox = new VBox(10);
+        vBox.setAlignment(Pos.CENTER);
+        vBox.setBackground(Background.fill(Color.rgb(26,26,26)));
+        vBox.setPadding(new Insets(10));
+        vBox.setMinWidth(300);
 
+        Label label = new Label("Goo...");
+        label.setFont(Font.font(75));
+        label.setTextFill(Color.WHITE);
+        Label label2 = new Label("Wybierz historię gry:");
+        label2.setFont(Font.font(75));
+        label2.setTextFill(Color.WHITE);
+
+        Button buttonOnline = new Button("Historia gry online");
+        Button buttonBot = new Button("Historia gry z botem");
+
+        Button button1 = new Button("9x9");
+        Button button2 = new Button("13x13");
+        Button button3 = new Button("19x19");
+
+        button1.setFont(new Font(15));
+        button2.setFont(new Font(15));
+        button3.setFont(new Font(15));
+        buttonOnline.setFont(new Font(15));
+        buttonBot.setFont(new Font(15));
+
+
+        button1.setMinSize(200,15);
+        button2.setMinSize(200,15);
+        button3.setMinSize(200,15);
+
+        button1.setBackground(Background.fill(Color.rgb(59,59,59)));
+        button2.setBackground(Background.fill(Color.rgb(59,59,59)));
+        button3.setBackground(Background.fill(Color.rgb(59,59,59)));
+
+        button1.setTextFill(Color.WHITE);
+        button2.setTextFill(Color.WHITE);
+        button3.setTextFill(Color.WHITE);
+
+        button1.setOnMouseEntered(e -> button1.setStyle("-fx-background-color: lightgray;"));
+        button1.setOnMouseExited(e -> button1.setStyle("-fx-background-color: default;"));
+
+        button2.setOnMouseEntered(e -> button2.setStyle("-fx-background-color: lightgray;"));
+        button2.setOnMouseExited(e -> button2.setStyle("-fx-background-color: default;"));
+
+        button3.setOnMouseEntered(e -> button3.setStyle("-fx-background-color: lightgray;"));
+        button3.setOnMouseExited(e -> button3.setStyle("-fx-background-color: default;"));
+
+        button1.setOnAction(e -> {
+            this.size = 9;
+            stoneColors = new StoneColor[9][9];
+            startReplayGame();
+        });
+
+        button2.setOnAction(e -> {
+            this.size = 13;
+            stoneColors = new StoneColor[13][13];
+            startReplayGame();
+        });
+
+        button3.setOnAction(e -> {
+            this.size = 19;
+            stoneColors = new StoneColor[19][19];
+            startReplayGame();
+        });
+        vBox.getChildren().addAll(label,button1,button2,button3);
+        Scene menuScene = new Scene(vBox);
+        stage.setScene(menuScene);
+        this.scene = menuScene;
+        stage.show();
     }
+
+    private void startReplayGame() {
+        // Połączenie z bazą danych i pobranie ruchów
+        String sql = "SELECT wiersz, kolumna, kolor FROM moves ORDER BY id ASC";
+
+        try (Connection conn = DatabaseConnector.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (circles == null || circles.length != size || circles[0].length != size) {
+                circles = new Circle[size][size];
+            }
+
+            VBox mainVBox = new VBox(10);
+            mainVBox.setAlignment(Pos.CENTER);
+            mainVBox.setPadding(new Insets(10));
+            mainVBox.setBackground(Background.fill(Color.rgb(26, 26, 26)));
+
+            GridPane gridPane = new GridPane();
+            gridPane.setAlignment(Pos.CENTER);
+            gridPane.setPadding(new Insets(10));
+            gridPane.setStyle("-fx-background-color: #DEB887;");
+            gridPane.setId("gridPane");
+
+            for (int i = 0; i < size; i++) {
+                for (int j = 0; j < size; j++) {
+                    circles[i][j] = new Circle(17.5, Color.BURLYWOOD);
+                    circles[i][j].setStroke(Color.rgb(26, 26, 26));
+                    circles[i][j].setStrokeWidth(3);
+                    circles[i][j].setFill(Color.BURLYWOOD);
+
+                    Line lineV = new Line(25, 0, 25, 50);
+                    Line lineH = new Line(0, 25, 50, 25);
+                    StackPane stackPane = new StackPane(lineH, lineV, circles[i][j]);
+                    gridPane.add(stackPane, j, i);
+                }
+            }
+
+            Button buttonBackToMenu = new Button("Wróć do menu");
+            buttonBackToMenu.setFont(new Font(15));
+            buttonBackToMenu.setMinWidth(150);
+            buttonBackToMenu.setStyle("-fx-background-color: #595959");
+            buttonBackToMenu.setTextFill(Color.WHITE);
+            buttonBackToMenu.setOnMouseEntered(e -> buttonBackToMenu.setStyle("-fx-background-color: lightgray;"));
+            buttonBackToMenu.setOnMouseExited(e -> buttonBackToMenu.setStyle("-fx-background-color: #595959;"));
+            buttonBackToMenu.setOnAction(e -> showMenu());
+
+            mainVBox.getChildren().addAll(gridPane, buttonBackToMenu);
+
+            while (rs.next()) {
+                int row = rs.getInt("wiersz");
+                int column = rs.getInt("kolumna");
+                String colorStr = rs.getString("kolor").toUpperCase();
+                StoneColor color = StoneColor.valueOf(colorStr);
+
+                if (color == StoneColor.WHITE) {
+                    circles[row][column].setFill(Color.WHITE);
+                } else if (color == StoneColor.BLACK) {
+                    circles[row][column].setFill(Color.BLACK);
+                }
+            }
+
+            Scene replayScene = new Scene(mainVBox);
+            replayScene.getRoot().setStyle("-fx-background-color: rgb(26, 26, 26);");
+
+            stage.setScene(replayScene);
+            stage.setTitle("Odtwarzanie gry");
+            stage.show();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void showChoseMenu(){
         VBox vBox = new VBox(10);
         vBox.setAlignment(Pos.CENTER);
