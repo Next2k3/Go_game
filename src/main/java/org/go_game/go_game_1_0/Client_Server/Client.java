@@ -246,9 +246,9 @@ public class Client extends Application implements Runnable {
                 StoneColor color = StoneColor.valueOf(colorStr);
 
                 if (color == StoneColor.WHITE) {
-                    circles[row][column].setFill(Color.WHITE);
+                    circles[column][row].setFill(Color.WHITE);
                 } else if (color == StoneColor.BLACK) {
-                    circles[row][column].setFill(Color.BLACK);
+                    circles[column][row].setFill(Color.BLACK);
                 }
             }
 
