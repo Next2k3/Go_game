@@ -6,6 +6,9 @@ import org.go_game.go_game_1_0.Board.StoneColor;
 
 import java.io.*;
 import java.net.Socket;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class GameSession extends Thread {
     public static int PLAYER1_WON = 1;
@@ -53,15 +56,15 @@ public class GameSession extends Thread {
                     skips = 0;
                     int row = fromPlayer1.readInt();
                     int column = fromPlayer1.readInt();
-                    board.placeStoneAndUpdateGroups(row, column, new Stone(StoneColor.BLACK, row, column));
+
                     if (row != -1 && column != -1) {
-                        while (board.getMove()==StoneColor.BLACK) {
+                        while (!board.placeStoneAndUpdateGroups(row, column, new Stone(StoneColor.BLACK, row, column))) {
                             toPlayer1.writeInt(UNCORRECTMOVE);
                             row = fromPlayer1.readInt();
                             column = fromPlayer1.readInt();
                             board.placeStoneAndUpdateGroups(row, column, new Stone(StoneColor.BLACK, row, column));
                         }
-
+                        saveMoveToDatabase(row, column, "Black");
                     } else {
                         board.changeMoveColor();
                         skips++;
@@ -74,15 +77,15 @@ public class GameSession extends Thread {
 
                     row = fromPlayer2.readInt();
                     column = fromPlayer2.readInt();
-                    board.placeStoneAndUpdateGroups(row, column, new Stone(StoneColor.WHITE, row, column));
-                    if (row != -1 && column != -1) {
-                        while (board.getMove()==StoneColor.WHITE) {
 
+                    if (row != -1 && column != -1) {
+                        while (!board.placeStoneAndUpdateGroups(row, column, new Stone(StoneColor.WHITE, row, column))) {
                             toPlayer2.writeInt(UNCORRECTMOVE);
                             row = fromPlayer2.readInt();
                             column = fromPlayer2.readInt();
-                            board.placeStoneAndUpdateGroups(row, column, new Stone(StoneColor.WHITE, row, column));
                         }
+                        board.placeStoneAndUpdateGroups(row, column, new Stone(StoneColor.WHITE, row, column));
+                        saveMoveToDatabase(row, column, "White");
                     } else {
                         board.changeMoveColor();
                         skips++;
@@ -100,6 +103,20 @@ public class GameSession extends Thread {
             e.printStackTrace();
         }
 
+    }
+
+    private void saveMoveToDatabase(int row, int column, String color) {
+        String sql = "INSERT INTO moves (wiersz, kolumna, kolor) VALUES (?, ?, ?)";
+        try (Connection conn = DatabaseConnector.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, row);
+            pstmt.setInt(2, column);
+            pstmt.setString(3, color);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
     private void sendMove(DataOutputStream out) throws IOException {
         String tablica =board.getBoardToString();
