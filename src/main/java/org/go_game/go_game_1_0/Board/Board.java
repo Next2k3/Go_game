@@ -121,14 +121,6 @@ public class Board {
 
         return isValidMove(row, col);
     }
-    public boolean isPosibleMove(int row,int col, Stone stone){
-        if (isValidMoveorKillMove(row, col, stone) && grid[row][col] == null){
-            if (!isContain(row, col, stone.getStoneColor())) {
-                return false;
-            }
-        }
-        return true;
-    }
     public boolean isKillMove(int row, int col, StoneColor stoneColor) {
         if(grid[row][col]==null){
             return false;

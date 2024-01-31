@@ -32,6 +32,7 @@ public class GameSession extends Thread {
     @Override
     public void run() {
         int skips = 0;
+        boolean game=true;
         try {
             DataInputStream fromPlayer1 = new DataInputStream(player1Socket.getInputStream());
             DataOutputStream toPlayer1 = new DataOutputStream(player1Socket.getOutputStream());
@@ -40,7 +41,7 @@ public class GameSession extends Thread {
 
 
 
-            while(true){
+            while(game){
                 if(skips==2){
                     if(board.zliczPunkty()[0]>board.zliczPunkty()[1]){
                         toPlayer1.writeInt(PLAYER1_WON);
@@ -52,12 +53,20 @@ public class GameSession extends Thread {
                         toPlayer1.writeInt(DRAW);
                         toPlayer2.writeInt(DRAW);
                     }
+                    int[] wyniki = board.zliczPunkty();
+                    toPlayer1.writeInt(wyniki[0]);
+                    toPlayer1.writeInt(wyniki[1]);
+                    toPlayer2.writeInt(wyniki[0]);
+                    toPlayer2.writeInt(wyniki[1]);
+                    game=false;
                 }else {
                     skips = 0;
                     int row = fromPlayer1.readInt();
                     int column = fromPlayer1.readInt();
 
-                    if (row != -1 && column != -1) {
+                    if(row == -2 && column ==-2){
+                        skips=2;
+                    }else if (row != -1 && column != -1) {
                         while (!board.placeStoneAndUpdateGroups(row, column, new Stone(StoneColor.BLACK, row, column))) {
                             toPlayer1.writeInt(UNCORRECTMOVE);
                             row = fromPlayer1.readInt();
@@ -69,6 +78,7 @@ public class GameSession extends Thread {
                         board.changeMoveColor();
                         skips++;
                     }
+
                     toPlayer1.writeInt(CORRECTMOVE);
                     sendMove(toPlayer1);
 
@@ -78,7 +88,9 @@ public class GameSession extends Thread {
                     row = fromPlayer2.readInt();
                     column = fromPlayer2.readInt();
 
-                    if (row != -1 && column != -1) {
+                    if(row == -2 && column ==-2){
+                        skips=2;
+                    }else if (row != -1 && column != -1) {
                         while (!board.placeStoneAndUpdateGroups(row, column, new Stone(StoneColor.WHITE, row, column))) {
                             toPlayer2.writeInt(UNCORRECTMOVE);
                             row = fromPlayer2.readInt();

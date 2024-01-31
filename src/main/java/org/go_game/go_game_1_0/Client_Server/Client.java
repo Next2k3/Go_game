@@ -9,11 +9,13 @@ import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import org.go_game.go_game_1_0.Board.StoneColor;
 
@@ -186,6 +188,7 @@ public class Client extends Application implements Runnable {
         vBox.setAlignment(Pos.CENTER);
         vBox.setBackground(Background.fill(Color.rgb(26,26,26)));
         vBox.setPadding(new Insets(10));
+        vBox.setMinWidth(350);
 
         Label label = new Label("Goo...");
         label.setFont(Font.font(75));
@@ -472,7 +475,9 @@ public class Client extends Application implements Runnable {
         button1.setOnMouseEntered(e -> button1.setStyle("-fx-background-color: lightgray;"));
         button1.setOnMouseExited(e -> button1.setStyle("-fx-background-color: #595959;"));
         button1.setOnAction(e->{
-
+            waiting = false;
+            rowSelected=-2;
+            columnSelected=-2;
         });
 
         Button button2 = new Button("Pomiń ture");
@@ -582,34 +587,23 @@ public class Client extends Application implements Runnable {
     private void recieveInfoFromServer() throws IOException, InterruptedException {
         int status = inputStream.readInt();
         if (status == PLAYER1_WON) {
+            int[] wyniki = recieveResults();
             continueToPlay = false;
-            if (myColor == StoneColor.BLACK) {
-                //statusLabel.setText("I Won! (X)");
-            }
-            else if (myColor == StoneColor.WHITE) {
-                //statusLabel.setText("Player 1 (X) has won!");
-                recieveMove();
-            }
+            displayResult("The player with the black stones won!",wyniki);
         }
         else if (status == PLAYER2_WON) {
+            int[] wyniki = recieveResults();
             continueToPlay = false;
-            if (myColor == StoneColor.WHITE) {
-               // statusLabel.setText("I Won! (O)");
-            }
-            else if (myColor == StoneColor.BLACK) {
-               // statusLabel.setText("Player 2 (O) has won!");
-                recieveMove();
-            }
+            displayResult("The player with the white stones won",wyniki);
         }
         else if (status == DRAW) {
+            int[] wyniki = recieveResults();
             continueToPlay = false;
-            //statusLabel.setText("Game is over, no winner!");
+            displayResult("Draw",wyniki);
 
-            if (myColor == StoneColor.WHITE) {
-                recieveMove();
-            }
         }else if(status == CORRECTMOVE){
             recieveMove();
+
 
             myTurn = false;
         }else if(status == UNCORRECTMOVE){
@@ -650,6 +644,13 @@ public class Client extends Application implements Runnable {
             }
         }
     }
+    private int[] recieveResults() throws IOException {
+        int results[] = new int[2];
+        results[0] = inputStream.readInt();
+        results[1] = inputStream.readInt();
+
+        return results;
+    }
 
     private void recieveMove() throws IOException {
         String tablica = inputStream.readUTF();
@@ -667,6 +668,36 @@ public class Client extends Application implements Runnable {
             HBox hBox = (HBox) scene.getRoot();
             GridPane gridPane = (GridPane) hBox.lookup("#gridPane"); // ID kontenera GridPane
             refreshBoardView(gridPane);
+        });
+    }
+    private void displayResult(String resultMessage,int[] wyniki) {
+        Platform.runLater(() -> {
+            VBox vBox = new VBox(10);
+            vBox.setAlignment(Pos.CENTER);
+            vBox.setBackground(Background.fill(Color.rgb(26,26,26)));
+            vBox.setPadding(new Insets(10));
+            vBox.setMinWidth(300);
+
+            Label label = new Label("Goo...");
+            label.setFont(Font.font(75));
+            label.setTextFill(Color.WHITE);
+
+            Label resultLabel = new Label(resultMessage);
+            resultLabel.setFont(Font.font(25));
+            resultLabel.setTextFill(Color.WHITE);
+
+            Label result = new Label("Black: "+wyniki[0]+" White: "+wyniki[1]);
+            result.setFont(Font.font(25));
+            result.setTextFill(Color.WHITE);
+
+            vBox.getChildren().addAll(label,resultLabel,result);
+            vBox.setAlignment(Pos.CENTER);
+
+            Scene resultScene = new Scene(vBox);
+            stage.setScene(resultScene);
+            stage.setMinHeight(350);
+            stage.setMinWidth(350);
+            stage.setScene(resultScene);
         });
     }
 }

@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="febe2da9-2102-4118-b62a-e91ba076074b" name="Changes" comment="Poprawnie dodawania kamieni na plansze i logiki z tym zwiaznej">
+    <list default="true" id="febe2da9-2102-4118-b62a-e91ba076074b" name="Changes" comment="usunieciecie blędu">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/Board.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Client_Server/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Client_Server/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Client_Server/GameSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Client_Server/GameSession.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,7 +90,7 @@
       <recent name="C:\Users\barto\Desktop\Go_game_1.0_kon\src\main\resources" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.org.go_game.go_game_1_0.Client_Server.Client">
     <configuration name="BoardAppTestXD" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.go_game.go_game_1_0.Board.BoardAppTestXD" />
       <module name="Go_game_1_0" />
@@ -334,7 +336,23 @@
       <option name="project" value="LOCAL" />
       <updated>1706645451862</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="poprawenie błedu z oknem wyboru planszy">
+      <option name="closed" value="true" />
+      <created>1706690477373</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1706690477373</updated>
+    </task>
+    <task id="LOCAL-00017" summary="usunieciecie blędu">
+      <option name="closed" value="true" />
+      <created>1706690497647</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1706690497647</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -380,7 +398,9 @@
     <MESSAGE value="oczyszczenie plików" />
     <MESSAGE value="poprawenie bledu" />
     <MESSAGE value="Poprawnie dodawania kamieni na plansze i logiki z tym zwiaznej" />
-    <option name="LAST_COMMIT_MESSAGE" value="Poprawnie dodawania kamieni na plansze i logiki z tym zwiaznej" />
+    <MESSAGE value="poprawenie błedu z oknem wyboru planszy" />
+    <MESSAGE value="usunieciecie blędu" />
+    <option name="LAST_COMMIT_MESSAGE" value="usunieciecie blędu" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
