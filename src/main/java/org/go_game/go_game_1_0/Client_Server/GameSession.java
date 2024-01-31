@@ -53,15 +53,14 @@ public class GameSession extends Thread {
                     skips = 0;
                     int row = fromPlayer1.readInt();
                     int column = fromPlayer1.readInt();
-
+                    board.placeStoneAndUpdateGroups(row, column, new Stone(StoneColor.BLACK, row, column));
                     if (row != -1 && column != -1) {
-                        while (!board.placeStoneAndUpdateGroups(row, column, new Stone(StoneColor.BLACK, row, column))) {
+                        while (board.getMove()==StoneColor.BLACK) {
                             toPlayer1.writeInt(UNCORRECTMOVE);
                             row = fromPlayer1.readInt();
                             column = fromPlayer1.readInt();
-
+                            board.placeStoneAndUpdateGroups(row, column, new Stone(StoneColor.BLACK, row, column));
                         }
-                        board.placeStoneAndUpdateGroups(row, column, new Stone(StoneColor.BLACK, row, column));
 
                     } else {
                         board.changeMoveColor();
@@ -75,14 +74,15 @@ public class GameSession extends Thread {
 
                     row = fromPlayer2.readInt();
                     column = fromPlayer2.readInt();
-
+                    board.placeStoneAndUpdateGroups(row, column, new Stone(StoneColor.WHITE, row, column));
                     if (row != -1 && column != -1) {
-                        while (!board.placeStoneAndUpdateGroups(row, column, new Stone(StoneColor.WHITE, row, column))) {
+                        while (board.getMove()==StoneColor.WHITE) {
+
                             toPlayer2.writeInt(UNCORRECTMOVE);
                             row = fromPlayer2.readInt();
                             column = fromPlayer2.readInt();
+                            board.placeStoneAndUpdateGroups(row, column, new Stone(StoneColor.WHITE, row, column));
                         }
-                        board.placeStoneAndUpdateGroups(row, column, new Stone(StoneColor.WHITE, row, column));
                     } else {
                         board.changeMoveColor();
                         skips++;

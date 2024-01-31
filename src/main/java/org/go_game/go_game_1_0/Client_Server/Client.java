@@ -310,9 +310,6 @@ public class Client extends Application implements Runnable {
     @Override
     public void run() {
         try {
-            // Wczytaj rozmiar planszy od użytkownika
-            System.out.print("Podaj rozmiar planszy: ");
-
             // Wyślij rozmiar planszy do serwera
             outputStream.writeInt(size);
 
@@ -346,7 +343,6 @@ public class Client extends Application implements Runnable {
     }
     private void recieveInfoFromServer() throws IOException, InterruptedException {
         int status = inputStream.readInt();
-        System.out.println(status);
         if (status == PLAYER1_WON) {
             continueToPlay = false;
             if (myColor == StoneColor.BLACK) {
@@ -399,7 +395,6 @@ public class Client extends Application implements Runnable {
     private void sendMove() throws IOException {
         outputStream.writeInt(rowSelected);
         outputStream.writeInt(columnSelected);
-        System.out.println(rowSelected+" "+columnSelected+" "+myColor);
     }
     private void refreshBoardView(GridPane gridPane) {
         for (int i = 0; i < size; i++) {

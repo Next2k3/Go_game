@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="febe2da9-2102-4118-b62a-e91ba076074b" name="Changes" comment="poprawenie bledu">
+    <list default="true" id="febe2da9-2102-4118-b62a-e91ba076074b" name="Changes" comment="debudgowanie Board">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/Board.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/Stone.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/Stone.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/StoneGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Board/StoneGroup.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Client_Server/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Client_Server/Client.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Client_Server/GameSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/go_game/go_game_1_0/Client_Server/GameSession.java" afterDir="false" />
     </list>
@@ -54,35 +52,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Application.BoardAppTestXD.executor": "Run",
-    "Application.Client.executor": "Run",
-    "Application.HelloApplication.executor": "Run",
-    "Application.Server.executor": "Run",
-    "Application.TestXD.executor": "Run",
-    "Application.clientTEST.executor": "Run",
-    "Application.org.go_game.go_game_1_0.ClientApp.Client.executor": "Run",
-    "Application.org.go_game.go_game_1_0.ClientNew3.Client.executor": "Run",
-    "Application.org.go_game.go_game_1_0.Client_Server.Client.executor": "Run",
-    "Application.serverTEST.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/barto/Desktop/Go_game_1.0_aktualne",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.45517242",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Application.BoardAppTestXD.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Client.executor&quot;: &quot;Run&quot;,
+    &quot;Application.HelloApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Server.executor&quot;: &quot;Run&quot;,
+    &quot;Application.TestXD.executor&quot;: &quot;Run&quot;,
+    &quot;Application.clientTEST.executor&quot;: &quot;Run&quot;,
+    &quot;Application.org.go_game.go_game_1_0.ClientApp.Client.executor&quot;: &quot;Run&quot;,
+    &quot;Application.org.go_game.go_game_1_0.ClientNew3.Client.executor&quot;: &quot;Run&quot;,
+    &quot;Application.org.go_game.go_game_1_0.Client_Server.Client.executor&quot;: &quot;Run&quot;,
+    &quot;Application.serverTEST.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/barto/Desktop/Go_game_1.0_aktualne&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.45517242&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="org.go_game.go_game_1_0.ClientApp" />
@@ -216,7 +214,8 @@
       <workItem from="1705941923000" duration="12187000" />
       <workItem from="1706631816442" duration="80000" />
       <workItem from="1706632685218" duration="8477000" />
-      <workItem from="1706641318233" duration="17228000" />
+      <workItem from="1706641318233" duration="17263000" />
+      <workItem from="1706686814600" duration="3167000" />
     </task>
     <task id="LOCAL-00001" summary="poprawa package Board i dodanie nowej package Board z alternatywna poprawiona implementacja">
       <option name="closed" value="true" />
@@ -338,7 +337,15 @@
       <option name="project" value="LOCAL" />
       <updated>1706645451862</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="debudgowanie Board">
+      <option name="closed" value="true" />
+      <created>1706658843431</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1706658843431</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -383,7 +390,8 @@
     <MESSAGE value="dodanie działajacego client-serwer" />
     <MESSAGE value="oczyszczenie plików" />
     <MESSAGE value="poprawenie bledu" />
-    <option name="LAST_COMMIT_MESSAGE" value="poprawenie bledu" />
+    <MESSAGE value="debudgowanie Board" />
+    <option name="LAST_COMMIT_MESSAGE" value="debudgowanie Board" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -23,6 +23,9 @@ public class Board {
         deadBlackStones=0;
         deadWhiteStones=0;
     }
+    public StoneColor getMove(){
+        return move;
+    }
     public boolean placeStone(int row, int col, Stone stone) {
         if (isValidMoveorKillMove(row, col, stone) && grid[row][col] == null){
             List<Stone> blockedStones = (stone.getStoneColor() == StoneColor.WHITE) ? blockedStonesWhite : blockedStonesBlack;
@@ -36,12 +39,7 @@ public class Board {
                     move = StoneColor.BLACK;
                 }
                 return true;
-            } else {
-                System.out.println("Nieprawidłowy ruch na zajeta pozycji (" + row + ", " + col + ")");
-                blockedStones.clear();
             }
-        } else {
-            System.out.println("Nieprawidłowy ruch na pozycji (" + row + ", " + col + ")");
         }
         return false;
     }
@@ -90,7 +88,28 @@ public class Board {
     }
     public boolean isValidMoveorKillMove(int row, int col, Stone stone) {
         int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-
+        int i=0,j=0;
+        for (int[] dir : directions) {
+            int newRow = row + dir[0];
+            int newCol = col + dir[1];
+            if(stone.getStoneColor()==StoneColor.WHITE ) {
+                if (isValidMove(newRow, newCol) && isKillMove(newRow, newCol, StoneColor.BLACK)) {
+                    i++;
+                }
+            }else{
+                if (isValidMove(newRow, newCol) && isKillMove(newRow, newCol, StoneColor.WHITE)) {
+                    i++;
+                }
+            }
+            if(isValidMove(newRow,newCol)){
+                if(grid[newRow][newCol]==null) {
+                    j++;
+                }
+            }
+        }
+        if(j==0 && i!=0){
+            return false;
+        }
         for (int[] dir : directions) {
             int newRow = row + dir[0];
             int newCol = col + dir[1];
@@ -117,13 +136,11 @@ public class Board {
                 && grid[row][col].getStoneGroup().getBreaths() == 1){
             return true;
         }
-        return true;
+        return false;
     }
     public boolean placeStoneAndUpdateGroups(int row,int col, Stone stone){
         if(placeStone(row,col,stone)) {
-
             StoneGroup newStoneGroup = new StoneGroup(size);
-
             addStoneToGroup(row, col, newStoneGroup);
             updateGroups(row, col, newStoneGroup);
             updateAllGroupsBreaths();
@@ -187,12 +204,12 @@ public class Board {
             }
         }
         for(StoneGroup stoneGroup : stoneGroups){
-            if(stoneGroup.getStones().getFirst().getStoneColor()!=move) {
+            if(stoneGroup.getStones().getFirst().getStoneColor()==move) {
                 updateBreathsForGroup(stoneGroup);
             }
         }
         for(StoneGroup stoneGroup : stoneGroups){
-            if(stoneGroup.getStones().getFirst().getStoneColor()==move) {
+            if(stoneGroup.getStones().getFirst().getStoneColor()!=move) {
                 updateBreathsForGroup(stoneGroup);
             }
         }
