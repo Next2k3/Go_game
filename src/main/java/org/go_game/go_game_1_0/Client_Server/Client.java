@@ -122,7 +122,7 @@ public class Client extends Application implements Runnable {
         vBox.setAlignment(Pos.CENTER);
         vBox.setBackground(Background.fill(Color.rgb(26,26,26)));
         vBox.setPadding(new Insets(10));
-        vBox.setMinWidth(300);
+        vBox.setMinWidth(350);
 
         Label label = new Label("Goo...");
         label.setFont(Font.font(75));
@@ -186,7 +186,6 @@ public class Client extends Application implements Runnable {
         vBox.setAlignment(Pos.CENTER);
         vBox.setBackground(Background.fill(Color.rgb(26,26,26)));
         vBox.setPadding(new Insets(10));
-        vBox.setMinWidth(300);
 
         Label label = new Label("Goo...");
         label.setFont(Font.font(75));
