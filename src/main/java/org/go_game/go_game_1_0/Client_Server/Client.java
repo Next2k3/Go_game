@@ -21,6 +21,10 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Random;
 
 public class Client extends Application implements Runnable {
     public static final int PLAYER1_WON = 1;
@@ -36,6 +40,7 @@ public class Client extends Application implements Runnable {
     private int columnSelected;
     private int size;
     private StoneColor[][] stoneColors;
+    private Circle[][] circles = new Circle[size][size];
     private Stage stage;
     private Scene scene;
     private StoneColor myColor;
@@ -56,22 +61,27 @@ public class Client extends Application implements Runnable {
         Button button1 = new Button("Gra Online");
         Button button2 = new Button("Gra z botem");
         Button button3 = new Button("Wyłącz gre");
+        Button button4 = new Button("Odtwórz grę z bazy");
 
         button1.setFont(new Font(15));
         button2.setFont(new Font(15));
         button3.setFont(new Font(15));
+        button4.setFont(new Font(15));
 
         button1.setMinSize(200,15);
         button2.setMinSize(200,15);
         button3.setMinSize(200,15);
+        button4.setMinSize(200, 15);
 
         button1.setBackground(Background.fill(Color.rgb(59,59,59)));
         button2.setBackground(Background.fill(Color.rgb(59,59,59)));
         button3.setBackground(Background.fill(Color.rgb(59,59,59)));
+        button4.setBackground(Background.fill(Color.rgb(59, 59, 59)));
 
         button1.setTextFill(Color.WHITE);
         button2.setTextFill(Color.WHITE);
         button3.setTextFill(Color.WHITE);
+        button4.setTextFill(Color.WHITE);
 
         button1.setOnMouseEntered(e -> button1.setStyle("-fx-background-color: lightgray;"));
         button1.setOnMouseExited(e -> button1.setStyle("-fx-background-color: default;"));
@@ -82,22 +92,30 @@ public class Client extends Application implements Runnable {
         button3.setOnMouseEntered(e -> button3.setStyle("-fx-background-color: lightgray;"));
         button3.setOnMouseExited(e -> button3.setStyle("-fx-background-color: default;"));
 
+        button4.setOnMouseEntered(e -> button4.setStyle("-fx-background-color: lightgray;"));
+        button4.setOnMouseExited(e -> button4.setStyle("-fx-background-color: default;"));
+
         button1.setOnAction(e -> showChoseMenu());
 
-        button2.setOnAction(e -> {
-
-        });
+        button2.setOnAction(e -> showChoseMenuBot());
 
         button3.setOnAction(e -> {
             Platform.exit();
         });
-        vBox.getChildren().addAll(label,button1,button2,button3);
+
+        button4.setOnAction(e -> showDatabaseGame());
+
+        vBox.getChildren().addAll(label,button1,button2,button3, button4);
         Scene menuScene = new Scene(vBox);
         stage.setScene(menuScene);
         stage.setMinHeight(350);
         stage.setMinWidth(350);
         this.scene =menuScene;
         stage.show();
+    }
+
+    private void showDatabaseGame() {
+
     }
     private void showChoseMenu(){
         VBox vBox = new VBox(10);
@@ -161,6 +179,227 @@ public class Client extends Application implements Runnable {
         stage.setScene(menuScene);
         this.scene = menuScene;
         stage.show();
+    }
+
+    private void showChoseMenuBot() {
+        VBox vBox = new VBox(10);
+        vBox.setAlignment(Pos.CENTER);
+        vBox.setBackground(Background.fill(Color.rgb(26,26,26)));
+        vBox.setPadding(new Insets(10));
+        vBox.setMinWidth(300);
+
+        Label label = new Label("Goo...");
+        label.setFont(Font.font(75));
+        label.setTextFill(Color.WHITE);
+
+        Button button1 = new Button("9x9");
+        Button button2 = new Button("13x13");
+        Button button3 = new Button("19x19");
+
+        button1.setFont(new Font(15));
+        button2.setFont(new Font(15));
+        button3.setFont(new Font(15));
+
+        button1.setMinSize(200,15);
+        button2.setMinSize(200,15);
+        button3.setMinSize(200,15);
+
+        button1.setBackground(Background.fill(Color.rgb(59,59,59)));
+        button2.setBackground(Background.fill(Color.rgb(59,59,59)));
+        button3.setBackground(Background.fill(Color.rgb(59,59,59)));
+
+        button1.setTextFill(Color.WHITE);
+        button2.setTextFill(Color.WHITE);
+        button3.setTextFill(Color.WHITE);
+
+        button1.setOnMouseEntered(e -> button1.setStyle("-fx-background-color: lightgray;"));
+        button1.setOnMouseExited(e -> button1.setStyle("-fx-background-color: default;"));
+
+        button2.setOnMouseEntered(e -> button2.setStyle("-fx-background-color: lightgray;"));
+        button2.setOnMouseExited(e -> button2.setStyle("-fx-background-color: default;"));
+
+        button3.setOnMouseEntered(e -> button3.setStyle("-fx-background-color: lightgray;"));
+        button3.setOnMouseExited(e -> button3.setStyle("-fx-background-color: default;"));
+
+        button1.setOnAction(e -> {
+            this.size = 9;
+            stoneColors = new StoneColor[9][9];
+            circles = new Circle[9][9];
+            startGameBot();
+        });
+
+        button2.setOnAction(e -> {
+            this.size = 13;
+            stoneColors = new StoneColor[13][13];
+            circles = new Circle[13][13];
+            startGameBot();
+        });
+
+        button3.setOnAction(e -> {
+            this.size = 19;
+            stoneColors = new StoneColor[19][19];
+            circles = new Circle[19][19];
+            startGameBot();
+        });
+        vBox.getChildren().addAll(label,button1,button2,button3);
+        Scene menuScene = new Scene(vBox);
+        stage.setScene(menuScene);
+        this.scene = menuScene;
+        stage.show();
+    }
+
+    private void startGameBot() {
+        HBox hBox = new HBox();
+        hBox.setBackground(Background.fill(Color.rgb(26,26,26)));
+
+        myTurn = true;
+
+        GridPane gridPane = new GridPane();
+        gridPane.setStyle("-fx-background-color: #DEB887");
+        gridPane.setId("gridPane");  // Dodaj to ID
+
+        for(int i=0;i<size;i++){
+            for(int j=0;j<size;j++) {
+                circles[i][j] = new Circle(17.5, Color.BURLYWOOD);
+
+                circles[i][j].setStroke(Color.rgb(26, 26, 26));
+                circles[i][j].setStrokeWidth(3);
+                if (stoneColors[i][j] == null) {
+                    circles[i][j].setFill(Color.BURLYWOOD);
+                } else if (stoneColors[i][j] == StoneColor.WHITE) {
+                    circles[i][j].setFill(Color.WHITE);
+                } else {
+                    circles[i][j].setFill(Color.BLACK);
+                }
+
+                Line lineV = new Line();
+                lineV.setStartX(25);
+                lineV.setStartY(0);
+                lineV.setEndX(25);
+                lineV.setEndY(50);
+
+                Line lineH = new Line();
+                lineH.setStartX(0);
+                lineH.setStartY(25);
+                lineH.setEndX(50);
+                lineH.setEndY(25);
+
+                lineV.setStrokeWidth(5);
+                lineH.setStrokeWidth(5);
+
+                int finalI = i;
+                int finalJ = j;
+                circles[i][j].setOnMouseClicked(e -> makeMove(finalI, finalJ));
+                StackPane stackPane = new StackPane(lineH, lineV, circles[i][j]);
+                gridPane.add(stackPane, j, i);
+
+                GridPane.setHalignment(stackPane, HPos.CENTER);
+                GridPane.setValignment(stackPane, VPos.CENTER);
+
+            }
+        }
+        gridPane.setMaxWidth(450);
+        gridPane.setMaxHeight(450);
+
+        VBox vBox = new VBox(15);
+
+
+        VBox vBox1 = new VBox(15);
+
+        Button button1 = new Button("Poddaj się");
+        button1.setFont(new Font(15));
+        button1.setMinWidth(150);
+        button1.setStyle("-fx-background-color: #595959");
+        button1.setTextFill(Color.WHITE);
+
+        button1.setOnMouseEntered(e -> button1.setStyle("-fx-background-color: lightgray;"));
+        button1.setOnMouseExited(e -> button1.setStyle("-fx-background-color: #595959;"));
+        button1.setOnAction(e->{
+            // -> "Poddałeś się"
+        });
+
+        Button button2 = new Button("Pomiń ture");
+        button2.setFont(new Font(15));
+        button2.setMinWidth(150);
+        button2.setStyle("-fx-background-color: #595959");
+        button2.setTextFill(Color.WHITE);
+
+        button2.setOnMouseEntered(e -> button2.setStyle("-fx-background-color: lightgray;"));
+        button2.setOnMouseExited(e -> button2.setStyle("-fx-background-color: #595959;"));
+        button2.setOnAction(e->{
+            waiting = false;
+            rowSelected=-1;
+            columnSelected=-1;
+        });
+
+        Button button3 = new Button("Wróć do menu ");
+        button3.setFont(new Font(15));
+        button3.setMinWidth(150);
+        button3.setStyle("-fx-background-color: #595959");
+        button3.setTextFill(Color.WHITE);
+
+        button3.setOnMouseEntered(e -> button3.setStyle("-fx-background-color: lightgray;"));
+        button3.setOnMouseExited(e -> button3.setStyle("-fx-background-color: #595959;"));
+        button3.setOnAction(e->{
+            showMenu();
+        });
+
+        HBox hBox2 = new HBox(gridPane);
+        hBox2.setPadding(new Insets(15));
+        hBox.getChildren().add(hBox2);
+        vBox1.getChildren().add(button1);
+        vBox1.getChildren().add(button2);
+        vBox1.getChildren().add(button3);
+        vBox.getChildren().add(vBox1);
+        vBox.setPadding(new Insets(15));
+        hBox.getChildren().add(vBox);
+        Scene gameScene = new Scene(hBox);
+        stage.setScene(gameScene);
+        stage.setMinHeight(575);
+        stage.setMinWidth(725);
+        this.scene=gameScene;
+
+    }
+
+    private void makeMove(int i, int j) {
+        if (myTurn && stoneColors[i][j] == null) {
+            stoneColors[i][j] = myColor;
+            circles[i][j].setFill(Color.BLACK);
+            saveMoveToDatabase(i, j, StoneColor.BLACK);
+            myTurn = false;
+            botMakeMove();
+        }
+    }
+
+    private void botMakeMove() {
+        Random random = new Random();
+        int i, j;
+        do {
+            i = random.nextInt(size);
+            j = random.nextInt(size);
+        } while (stoneColors[i][j] != null);
+
+        stoneColors[i][j] = StoneColor.WHITE;
+        final int finalI = i;
+        final int finalJ = j;
+        Platform.runLater(() -> circles[finalI][finalJ].setFill(Color.WHITE));
+        myTurn = true;
+        saveMoveToDatabase(i, j, StoneColor.WHITE);
+    }
+
+    private void saveMoveToDatabase(int row, int column, StoneColor color) {
+        String sql = "INSERT INTO moves_withbot (wiersz, kolumna, kolor) VALUES (?, ?, ?)";
+
+        try (Connection conn = DatabaseConnector.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, row);
+            pstmt.setInt(2, column);
+            pstmt.setString(3, color.toString());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
     private void startGame() {
         HBox hBox = new HBox();
@@ -401,6 +640,7 @@ public class Client extends Application implements Runnable {
         outputStream.writeInt(columnSelected);
         System.out.println(rowSelected+" "+columnSelected+" "+myColor);
     }
+
     private void refreshBoardView(GridPane gridPane) {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
